@@ -24,7 +24,7 @@ local tests = {
 			local row = assert(query:fetch(true))
 			assert(row["id"] == 0)
 			assert(row["title"] == "title test")
-			assert(row["official_title"] == "offical title test")
+			assert(row["official_title"] == "official title test")
 			assert(row["episodes"] == 0)
 			assert(row["genres"] == 0)
 			assert(query:close())
