@@ -2,7 +2,7 @@ require"helper.mysql"
 
 local tests = {
 	{
-		"insert into 'nin_data_anime' ('id', 'title,', 'official_title', 'episodes', 'genres') values (?,?,?,?,?)",
+		"insert into nin_data_anime ('id', 'title,', 'official_title', 'episodes', 'genres') values (?,?,?,?,?)",
 		function(q)
 			io.write'Running test #1: '
 			local query = assert(_DB:prepare(q))
