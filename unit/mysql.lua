@@ -2,11 +2,11 @@ require"helper.mysql"
 
 local tests = {
 	{
-		"insert into nin_data_anime (id, title, official_title, episodes, genres) values (?,?,?,?,?)",
+		"insert into nin_data_anime (id, title, official_title, episodes) values (?,?,?,?)",
 		function(q)
 			io.write'Running test #1: '
 			local query = assert(_DB:prepare(q))
-			assert(query:execute(0,'title test', 'official title test', '0', '0'))
+			assert(query:execute(0,'title test', 'official title test', '0'))
 			assert(_DB:commit())
 			assert(query:close())
 			print('Done')
@@ -25,7 +25,6 @@ local tests = {
 			assert(row["title"] == "title test")
 			assert(row["official_title"] == "official title test")
 			assert(row["episodes"] == 0)
-			assert(row["genres"] == 0)
 			assert(query:close())
 			print'Done'
 		end,
