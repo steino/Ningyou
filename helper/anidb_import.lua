@@ -27,8 +27,8 @@ for i, k in pairs(titles) do
 end
 
 _DB:commit()
-io.write("Inserted ".. insert:affected().." rows.")
-io.write("Updated " .. update:affected().." rows.")
+print("Inserted ".. insert:affected().." rows.")
+print("Updated " .. update:affected().." rows.")
 
 insert:close()
 update:close()
