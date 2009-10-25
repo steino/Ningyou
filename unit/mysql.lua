@@ -15,7 +15,6 @@ local tests = {
 	{
 		"select * from nin_data_anime where id = ?",
 		function(q)
-			local output
 			io.write'Running test #2: '
 			local query = assert(_DB:prepare(q))
 			assert(query:execute(0))
