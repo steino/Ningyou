@@ -6,8 +6,10 @@ local function check_anime(id)
 	check:execute(id)
 	_DB:commit()
 	if check:fetch() then
+		check:close()
 		return true
-	else 
+	else
+		check:close()
 		return nil
 	end
 end
@@ -25,7 +27,8 @@ for i, k in pairs(titles) do
 end
 
 _DB:commit()
-query:close()
+insert:close()
+update:close()
 
 io.write("Inserted ".. insert:affected().." rows.")
 io.write("Updated " .. update:affected().." rows.")
