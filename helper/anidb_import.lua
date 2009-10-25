@@ -4,6 +4,7 @@ local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local function check_anime(id)
 	local check = _DB:prepare('select id from nin_data_anime where id = ?')
 	check:execute(id)
+	_DB:commit()
 	if check:fetch() then
 		return true
 	else 
