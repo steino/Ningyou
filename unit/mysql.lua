@@ -15,18 +15,18 @@ local tests = {
 	{
 		"select * from nin_data_anime where id = ?",
 		function(q)
+			local output
 			io.write'Running test #2: '
 			local query = assert(_DB:prepare(q))
 			assert(query:execute(0))
 			assert(_DB:commit())
 			local cols = assert(query:columns())
 			local row = assert(query:fetch(true))
-			while row do
-				for i,n in pairs(cols) do
-					print(row[n])
-				end
-				row = query:fetch(true)
-			end
+			assert(row["id"] == 0)
+			assert(row["title"] == "title test")
+			assert(row["official_title"] == "offical title test")
+			assert(row["episodes"] == 0)
+			assert(row["genres"] == 0)
 			assert(query:close())
 			print'Done'
 		end,
