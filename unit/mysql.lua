@@ -25,7 +25,7 @@ local tests = {
 				for i,n in pairs(cols) do
 					print(row[n])
 				end
-				row = assert(query:fetch(true))
+				row = query:fetch(true)
 			end
 			assert(query:close())
 			print'Done'
