@@ -2,7 +2,7 @@ require"helper.mysql"
 
 local tests = {
 	{
-		"insert into nin_data_anime ('id', 'title,', 'official_title', 'episodes', 'genres') values (?,?,?,?,?)",
+		"insert into nin_data_anime (id, title, official_title, episodes, genres) values (?,?,?,?,?)",
 		function(q)
 			io.write'Running test #1: '
 			local query = assert(_DB:prepare(q))
@@ -13,7 +13,7 @@ local tests = {
 		end,
 	},
 	{
-		"select * from 'nin_data_anime' where id = ?",
+		"select * from nin_data_anime where id = ?",
 		function(q)
 			io.write'Running test #2: '
 			local query = assert(_DB:prepare(q))
@@ -32,7 +32,7 @@ local tests = {
 		end,
 	},
 	{
-		"delete from 'nin_data_anime' where id = ?",
+		"delete from nin_data_anime where id = ?",
 		function(q)
 			io.write'Running test #3: '
 			local query = assert(_DB:prepare(q))
