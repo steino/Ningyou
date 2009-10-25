@@ -3,7 +3,7 @@ return function(path)
 
 	if(path) then
 		local _PATH = {}
-		for str in input:gmatch'[^/]+' do
+		for str in path:gmatch'[^/]+' do
 			table.insert(_PATH, str)
 		end
 
