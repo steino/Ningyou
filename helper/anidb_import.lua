@@ -1,5 +1,5 @@
 require'helper.mysql'
-local titles = loadfile(os.getenv("HOME")../animeTitles.lua)
+local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")
 
 local query = _DB:prepare('insert into nin_data_anime (id, title, official_title) values (?,?,?)')
 
