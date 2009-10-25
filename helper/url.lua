@@ -1,5 +1,5 @@
-return function()
-	local path = os.getenv('PATH_INFO')
+return function(path)
+	path = path or os.getenv('PATH_INFO')
 
 	if(path) then
 		local _PATH = {}
