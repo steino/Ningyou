@@ -9,8 +9,8 @@ local function check_anime()
 	check:execute()
 	_DB:commit()
 	for row in check:rows(true) do
-		if titles[row["id"]] then
-			table.insert(updates, row["id"], "true")
+		if titles[tonumber(row["id"])] then
+			table.insert(updates, tonumber(row["id"]), "true")
 			update_count = update_count + 1
 		end
 	end
@@ -27,7 +27,6 @@ for id, t in pairs(titles) do
 		update:execute(t["title"], t[1] or "No title", tonumber(id))
 		up = up + 1
 	else
-		print(updates[tonumber(id)], tonumber(id))
 		insert:execute(tonumber(id), t["title"], t[1] or "No title")
 		ins = ins + 1
 	end
