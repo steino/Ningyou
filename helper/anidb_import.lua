@@ -29,6 +29,7 @@ for i, k in pairs(titles) do
 end
 
 _DB:commit()
+print("There is " .. #updates .. " titles in the update table")
 print("Inserted ".. insert:affected().." rows.")
 print("Updated " .. update:affected().." rows.")
 
