@@ -9,8 +9,8 @@ local function check_anime()
 	check:execute()
 	_DB:commit()
 	for row in check:rows(true) do
-		if titles[tonumber(row["id"])] then
-			table.insert(updates, tonumber(row["id"]), "true")
+		if titles[row["id"]] then
+			table.insert(updates, row["id"], "true")
 			update_count = update_count + 1
 		end
 	end
@@ -23,11 +23,11 @@ local update = _DB:prepare("update nin_data_anime set title = '?', official_titl
 check_anime()
 
 for id, t in pairs(titles) do
-	if updates[tonumber(id)] then
-		update:execute(t["title"], t[1] or "No title", tonumber(id))
+	if updates[id] then
+		update:execute(t["title"], t[1] or "No title", id)
 		up = up + 1
 	else
-		insert:execute(tonumber(id), t["title"], t[1] or "No title")
+		insert:execute(id, t["title"], t[1] or "No title")
 		ins = ins + 1
 	end
 end
