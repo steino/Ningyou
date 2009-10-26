@@ -24,11 +24,11 @@ check_anime()
 
 for id, t in pairs(titles) do
 	if updates[tonumber(id)] then
-		update:execute(t["title"], t[1], tonumber(id))
+		update:execute(t["title"], t[1] or "No title", tonumber(id))
 		up = up + 1
 	else
 		print(updates[tonumber(id)], tonumber(id))
-		insert:execute(tonumber(id), t["title"], t[1])
+		insert:execute(tonumber(id), t["title"], t[1] or "No title")
 		ins = ins + 1
 	end
 end
