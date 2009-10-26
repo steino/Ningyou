@@ -1,6 +1,6 @@
 require'helper.mysql'
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
-local up, ins = 0
+local up, ins = 0, 0
 local updates = {}
 
 
@@ -38,5 +38,5 @@ print("Updated " .. up .." rows.")
 
 insert:close()
 update:close()
-up, ins = nil
+up, ins = nil, nil
 updates = nil
