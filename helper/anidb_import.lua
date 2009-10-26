@@ -20,9 +20,9 @@ local update = _DB:prepare("update nin_data_anime set title = '?', official_titl
 
 for i, k in pairs(titles) do
 	if check_anime(i) then
-		update:execute(tonumber(i), k["title"], k[1])
+		update:execute(k["title"], k[1], tonumber(i))
 	else
-		insert:execute(k["title"], k[1], tonumber(i))
+		insert:execute(tonumber(i), k["title"], k[1])
 	end
 end
 
