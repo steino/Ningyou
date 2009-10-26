@@ -20,6 +20,7 @@ end
 local insert = _DB:prepare('insert into nin_data_anime (id, title, official_title) values (?,?,?)')
 local update = _DB:prepare("update nin_data_anime set title = '?', official_title = '?' where id = ?")
 
+check_anime()
 
 for i, k in pairs(titles) do
 	if updates[tonumber(i)] then
@@ -35,3 +36,4 @@ print("Updated " .. update:affected().." rows.")
 
 insert:close()
 update:close()
+updates = nil
