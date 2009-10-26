@@ -9,8 +9,8 @@ local function check_anime()
 	_DB:commit()
 	local row = check:fetch(true)
 	while row do
-		if titles[row["id"] then
-			table.insert(updates, row["id"], "true"])
+		if titles[row["id"]] then
+			table.insert(updates, row["id"], "true")
 		end
 		row = check:fetch(true)
 	end
