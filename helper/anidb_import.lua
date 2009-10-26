@@ -7,12 +7,10 @@ local function check_anime()
 	local check = _DB:prepare('select id from nin_data_anime')
 	check:execute()
 	_DB:commit()
-	local row = check:fetch(true)
-	while row do
+	for row in check:rows(true) do
 		if titles[row["id"]] then
 			table.insert(updates, row["id"], "true")
 		end
-		row = check:fetch(true)
 	end
 	check:close()
 end
