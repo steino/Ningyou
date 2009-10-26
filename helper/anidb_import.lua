@@ -33,6 +33,7 @@ for i, k in pairs(titles) do
 end
 
 _DB:commit()
+print("There is ".. update_count .. " in the update table.")
 print("Inserted ".. ins .." rows.")
 print("Updated " .. up .." rows.")
 
