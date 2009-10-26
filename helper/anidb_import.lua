@@ -27,6 +27,7 @@ for i, k in pairs(titles) do
 		update:execute(k["title"], k[1], tonumber(i))
 		up = up + 1
 	else
+		print(tonumber(i), k["title"], k[1])
 		insert:execute(tonumber(i), k["title"], k[1])
 		ins = ins + 1
 	end
