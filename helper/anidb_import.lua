@@ -22,19 +22,19 @@ local update = _DB:prepare("update nin_data_anime set title = '?', official_titl
 
 check_anime()
 
-for i, k in pairs(titles) do
-	if updates[tonumber(i)] then
-		update:execute(k["title"], k[1], tonumber(i))
+for id, t in pairs(titles) do
+	if updates[tonumber(id)] then
+		update:execute(t["title"], t[1], tonumber(id))
 		up = up + 1
 	else
-		print(tonumber(i), k["title"], k[1])
-		insert:execute(tonumber(i), k["title"], k[1])
+		print(updates[tonumber(id)], tonumber(id))
+		insert:execute(tonumber(id), t["title"], t[1])
 		ins = ins + 1
 	end
 end
 
 _DB:commit()
-print("There is ".. update_count .. " in the update table.")
+print("There is ".. update_count .. " titles in the update table.")
 print("Inserted ".. ins .." rows.")
 print("Updated " .. up .." rows.")
 
