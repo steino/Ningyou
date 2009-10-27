@@ -10,7 +10,7 @@ local function check_anime()
 	_DB:commit()
 	for row in check:rows(true) do
 		if titles[row["id"]] then
-			updates[i] = "true"
+			updates[row["id"]] = "true"
 			update_count = update_count + 1
 		end
 	end
