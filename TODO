@@ -1,8 +1,8 @@
 TODO:
 
 * IMPORTANT
-** URL-Parser to modules
-** Parse the anidb database for titles
+** URL-Parser to modules (done)
+** Parse the anidb database for titles (done)
 ** Textile-lib
 ** Template system
 ** Output system
