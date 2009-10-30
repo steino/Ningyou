@@ -12,7 +12,8 @@ function myanimelist(userid, file)
 	local animedata = _DB:prepare("select * from nin_data_anime")
 	local check = _DB:prepare("select * from nin_list_anime where userid = '?'")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
-	
+	local update = _DB:prepare("update nin_list_anime set episodes = '?' where id = ?")
+
 	local catergoryid = {
 		["Watching"] = 1,
 		["Plan to Watch"] = 2,
@@ -26,7 +27,7 @@ function myanimelist(userid, file)
 	_DB:commit()
 	
 	for row in check:rows(true) do
-		updates[row["id"]] = true
+		updates[row["animeid"]] = row["id"]
 	end
 
 	for row in animedata:rows(true) do
@@ -44,11 +45,12 @@ function myanimelist(userid, file)
 
 	for i,v in pairs(data[2]) do
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
-			if updates[stripcdata(v[2][1])] then
-				update:execute(etc)
+			if updates[animeids[stripcdata(v[2][1])]] then
+				update:execute(tonumber(v[6][1]), updates[animeids[stripcdata[v[2][1]]]])
 			else
 				import:execute(userid, animeids[stripcdata(v[2][1]]), catergoryid[v[14][1], tonumber(v[6][1]))
 			end	
 		end
+		_DB:commit()
 	end
 end
