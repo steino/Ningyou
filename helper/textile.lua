@@ -1,48 +1,4 @@
-local split = function(msg, char)
-	local arr = {}
-	local fchar = "(.-)" .. char
-	local last_end = 1
-	local s, e, cap = msg:find(fchar, 1)
-
-	while s do
-		if s ~= 1 or cap ~= "" then
-			table.insert(arr, cap)
-		end
-		last_end = e+1
-		s, e, cap = msg:find(fchar, last_end)
-	end
-
-	if last_end <= #msg then
-		cap = msg:sub(last_end)
-		table.insert(arr, cap)
-	end
-
-	return arr
-end
-
-local input = [[
-A wild line appears!(tm)
-
-* Line 1.1
-** Line 2.1
-** Line 2.2
-* Line 1.2
-
-@Some code@
-
-'it's'
-"it's"
-
-3 x 3 = 9
-a ^2^ + b ^2^ = c ^2^
-log ~2~ x
-
-I'm %{color:red}unaware%
-of most soft drinks.
-
-p(haha). lawl
-*(haha) Line 1.1
-]]
+local utils = require"helper.utils"
 
 local tree = {}
 
@@ -142,34 +98,9 @@ local handle = function(line, content)
 	tree[line] = data
 end
 
-for line, content in ipairs(split(input, "\n")) do
-	handle(line, content)
-end
-
-function table_print (tt, indent, done)
-	done = done or {}
-	indent = indent or 0
-	if type(tt) == "table" then
-		for key, value in pairs (tt) do
-			io.write(string.rep (" ", indent)) -- indent it
-			if type (value) == "table" and not done [value] then
-				done [value] = true
-				io.write(string.format("[%s] => table\n", tostring (key)));
-				io.write(string.rep (" ", indent+4)) -- indent it
-				io.write("(\n");
-				table_print (value, indent + 7, done)
-				io.write(string.rep (" ", indent+4)) -- indent it
-				io.write(")\n");
-			else
-				io.write(string.format("[%s] => %s\n",
-				tostring (key), tostring(value)))
-			end
-		end
-	else
-		io.write(tt .. "\n")
+return function(input)
+	for line, content in ipairs(utils.split(input, "\n")) do
+		handle(line, content)
 	end
+	return tree
 end
-
-print('Input\n', input)
-print'======='
-table_print(tree)
