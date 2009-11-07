@@ -2,7 +2,7 @@
 -- myAnimeList
 --
 
-function myanimelist(userid, file)
+local function myanimelist(userid, file)
 	require"helper.mysql"
 	local parse = require"helper.xml"
 	local data = parse(file)
@@ -54,3 +54,7 @@ function myanimelist(userid, file)
 		_DB:commit()
 	end
 end
+
+return { 
+	myanimelist = myanimelist,
+}
