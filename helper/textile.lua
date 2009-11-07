@@ -75,21 +75,22 @@ local handle = function(line, content)
 	if(lists[listMark]) then
 		-- If the first and the last match, then it's fine!
 		local block, _, type, attributes, content = content:find"([*#])([^ #*]*) (.*)$"
+		if(block) then
+			data.type = lists[type] or 'list:invalid'
+			data.block = block
 
-		data.type = lists[type] or 'list:invalid'
-		data.block = block
+			if(attributes ~= '') then
+				data.attributes = attributes
+			end
 
-		if(attributes ~= '') then
-			data.attributes = attributes
+			-- We need to overwrite with our extracted contend.
+			data.content = content
+
+			doReplaces(data)
+
+			tree[line] = data
+			return
 		end
-
-		-- We need to overwrite with our extracted contend.
-		data.content = content
-
-		doReplaces(data)
-
-		tree[line] = data
-		return
 	end
 
 	doReplaces(data)
