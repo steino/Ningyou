@@ -4,6 +4,7 @@ local parse = require"helper.xml"
 local run_update, run_import, error_update, error_import
 local title, animeid, episodes, categoryid
 
+local notfound = {}
 --
 -- myAnimeList
 --
@@ -65,11 +66,13 @@ local function myanimelist(userid, file)
 					if not run_import then print("Error adding "..title..": " ..error_import.. "\n") end
 				end
 			else
-				print("Anime " .. title .. " not found")
+				table.insert(notfound, title)
 			end
 		end
 		_DB:commit()
 	end
+
+	return notfound
 end
 
 return { 
