@@ -1,5 +1,6 @@
 require"helper.mysql"
 local parse = require"helper.xml"
+local runupdate, runimport
 
 --
 -- myAnimeList
@@ -23,7 +24,10 @@ local function myanimelist(userid, file)
 		["Dropped"] = 5, 
 }
 
-	check:execute(userid)
+	local runcheck = check:execute(userid)
+	if not runcheck then
+		print(runcheck)
+	end
 	animedata:execute()
 	_DB:commit()
 	
@@ -47,9 +51,16 @@ local function myanimelist(userid, file)
 	for i,v in pairs(data[2]) do
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
 			if updates[animeids[stripcdata(v[2][1])]] then
-				update:execute(tonumber(v[6][1]), updates[animeids[stripcdata(v[2][1])]])
+				runupdate = update:execute(tonumber(v[6][1]), updates[animeids[stripcdata(v[2][1])]])
+				if not runupdate then
+					print(runupdate)
+				end
 			else
-				import:execute(userid, animeids[stripcdata(v[2][1])], catergoryid[v[14][1]], tonumber(v[6][1]))
+				runinsert = import:execute(userid, animeids[stripcdata(v[2][1])], catergoryid[v[14][1]], tonumber(v[6][1]))
+				if not runinsert then
+					print(runinsert)
+				end
+				print(runinsert)
 			end
 		end
 		_DB:commit()
