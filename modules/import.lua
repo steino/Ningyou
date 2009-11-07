@@ -1,7 +1,8 @@
 require"helper.mysql"
 local utils = require"helper.utils"
 local parse = require"helper.xml"
-local runupdate, runimport
+local run_update, run_import, error_update, error_import
+local title, animeid, episodes, categoryid
 
 --
 -- myAnimeList
@@ -15,9 +16,9 @@ local function myanimelist(userid, file)
 	local animedata = _DB:prepare("select * from nin_data_anime")
 	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
-	local update = _DB:prepare("update nin_list_anime set episodes = '?' where id = ?")
+	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
 
-	local catergoryid = {
+	local catergorytoid = {
 		["Watching"] = 1,
 		["Plan to Watch"] = 2,
 		["Completed"] = 3,
@@ -25,9 +26,9 @@ local function myanimelist(userid, file)
 		["Dropped"] = 5, 
 }
 
-	local runcheck = check:execute(userid)
+	local runcheck, checkerror = check:execute(userid)
 	if not runcheck then
-		print(runcheck)
+		print(checkerror)
 	end
 	animedata:execute()
 	_DB:commit()
@@ -50,18 +51,22 @@ local function myanimelist(userid, file)
 	end
 
 	for i,v in pairs(data[2]) do
+		title = stripcdata(v[2][1])
+		animeid = animeids[v[2][1]]
+		catergoryid = catergorytoid(v[14][1])
+		episodes = tonumber(v[6][1])
+		
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
-			if updates[animeids[stripcdata(v[2][1])]] then
-				runupdate, updaterror = update:execute(tonumber(v[6][1]), updates[animeids[stripcdata(v[2][1])]])
-				if not runupdate then
-					print(stripcdata(v[2][1]), animeids[stripcdata(v[2][1])], updates[animeids[stripcdata(v[2][1])]], updaterror)
+			if animeid then
+				if updates[animeid] then
+					run_update, error_update = update:execute(episodes, animeid)
+					if not run_update then print("Error updating "..title..": " ..error_update) end
+				else
+					run_importi, error_import = import:execute(userid, animeid, categoryid, episodes)
+					if not run import then print("Error adding "..title..": " ..error_import) end
 				end
 			else
-				runinsert, inserterror = import:execute(userid, animeids[stripcdata(v[2][1])], catergoryid[v[14][1]], tonumber(v[6][1]))
-				if not runinsert then
-					print(stripcdata(v[2][1]), animeids[stripcdata(v[2][1])], updates[animeids[stripcdata(v[2][1])]], inserterror)
-				end
-				print(runinsert)
+				print"Anime "..title.." not found"
 			end
 		end
 		_DB:commit()
