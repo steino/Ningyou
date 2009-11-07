@@ -1,30 +1,71 @@
 local textile = require"helper.textile"
-local utils = require"helper.utils"
 
-local input = [[
-A wild line appears!(tm)
- 
-* Line 1.1
-** Line 2.1
-** Line 2.2
-* Line 1.2
- 
-@Some code@
- 
-'it's'
-"it's"
- 
-3 x 3 = 9
-a ^2^ + b ^2^ = c ^2^
-log ~2~ x
- 
-I'm %{color:red}unaware%
-of most soft drinks.
- 
-p(haha). lawl
-*(haha) Line 1.1
-]]
+local input = {
+	'*bold*',
+	'(tm)',
+	'(r)',
+	'(c)',
+	'--',
 
-local output = textile(input)
+	"'test'",
+	"It's",
+	"I've",
+	"'It's a it''",
 
-utils.tableprint(output)
+	"3 x 3 = 3^x + 0",
+	"3 x 3 = 3^2",
+	"3 x 3 = 3^2^",
+
+	'"Test"',
+	'"Test',
+	'"Test""',
+
+
+	"3~3",
+	"3~3~",
+	"3~a not b",
+
+	"@code@more@",
+}
+
+local output = {
+	'<strong>bold</strong>',
+	'™',
+	'®',
+	'©',
+	'—',
+
+	'‘test’',
+	"It’s",
+	"I’ve",
+	'‘It’s a it’’',
+
+	"3 × 3 = 3<sup>x</sup> + 0",
+	"3 × 3 = 3<sup>2</sup>",
+	"3 × 3 = 3<sup>2</sup>",
+
+	"“Test”",
+	'"Test',
+	'“Test”"',
+
+	"3<sub>3</sub>",
+	"3<sub>3</sub>",
+	"3<sub>a</sub> not b",
+
+	"<code>code@more</code>",
+}
+
+local failed, passed = 0, 0
+for test, data in ipairs(input) do
+	local out = textile(data)[1].content
+	local valid = out == output[test]
+	if(valid) then
+		passed = passed + 1
+
+		io.write(string.format("Test #%02d: %s\n", test, '\27[1;32mPassed\27[00m'))
+	else
+		failed = failed + 1
+
+		io.write(string.format("Test #%02d: %s", test, '\27[1;31mFailed\27[00m'), '\t', string.format('Got [%s] expected [%s]', out, output[test]), '\n')
+	end
+end
