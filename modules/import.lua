@@ -59,10 +59,12 @@ local function myanimelist(userid, file)
 			if animeid then
 				if updates[animeid] then
 					run_update, error_update = update:execute(episodes, animeid)
-					if not run_update then print("Error updating "..title..": " ..error_update) end
+					io.write(title, animeid, catergoryid, episodes, \t)
+					if not run_update then print("Error updating "..title..": " ..error_update\n) end
 				else
 					run_importi, error_import = import:execute(userid, animeid, categoryid, episodes)
-					if not run_import then print("Error adding "..title..": " ..error_import) end
+					io.write(title, animeid, catergoryid, episodes, \t)
+					if not run_import then print("Error adding "..title..": " ..error_import\n) end
 				end
 			else
 				print("Anime " .. title .. " not found")
