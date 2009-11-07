@@ -11,7 +11,7 @@ local function myanimelist(userid, file)
 	local animeids = {}
 
 	local animedata = _DB:prepare("select * from nin_data_anime")
-	local check = _DB:prepare("select * from nin_list_anime where userid = '?'")
+	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
 	local update = _DB:prepare("update nin_list_anime set episodes = '?' where id = ?")
 
@@ -21,7 +21,7 @@ local function myanimelist(userid, file)
 		["Completed"] = 3,
 		["On-Hold"] = 4,
 		["Dropped"] = 5, 
-	}
+}
 
 	check:execute(userid)
 	animedata:execute()
