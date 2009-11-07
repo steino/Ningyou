@@ -1,10 +1,11 @@
+require"helper.mysql"
+local parse = require"helper.xml"
+
 --
 -- myAnimeList
 --
 
 local function myanimelist(userid, file)
-	require"helper.mysql"
-	local parse = require"helper.xml"
 	local data = parse(file)
 	local updates = {}
 	local animeids = {}
@@ -48,8 +49,8 @@ local function myanimelist(userid, file)
 			if updates[animeids[stripcdata(v[2][1])]] then
 				update:execute(tonumber(v[6][1]), updates[animeids[stripcdata(v[2][1])]])
 			else
-				import:execute(userid, animeids[stripcdata(v[2][1]]), catergoryid[v[14][1], tonumber(v[6][1]))
-			end	
+				import:execute(userid, animeids[stripcdata(v[2][1])], catergoryid[v[14][1]], tonumber(v[6][1]))
+			end
 		end
 		_DB:commit()
 	end
