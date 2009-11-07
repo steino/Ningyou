@@ -24,7 +24,7 @@ local function myanimelist(userid, file)
 		["Completed"] = 3,
 		["On-Hold"] = 4,
 		["Dropped"] = 5, 
-}
+	}
 
 	local runcheck, checkerror = check:execute(userid)
 	if not runcheck then
@@ -51,12 +51,11 @@ local function myanimelist(userid, file)
 	end
 
 	for i,v in pairs(data[2]) do
-		title = stripcdata(v[2][1])
-		animeid = animeids[v[2][1]]
-		catergoryid = catergorytoid[v[14][1]] or 0
-		episodes = tonumber(v[6][1])
-		
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
+			title = stripcdata(v[2][1])
+			animeid = animeids[v[2][1]]
+			catergoryid = catergorytoid[v[14][1]] or 0
+			episodes = tonumber(v[6][1])
 			if animeid then
 				if updates[animeid] then
 					run_update, error_update = update:execute(episodes, animeid)
