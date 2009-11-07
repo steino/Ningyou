@@ -18,7 +18,7 @@ local function myanimelist(userid, file)
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
 	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
 
-	local catergorytoid = {
+	local categorytoid = {
 		["Watching"] = 1,
 		["Plan to Watch"] = 2,
 		["Completed"] = 3,
@@ -54,16 +54,16 @@ local function myanimelist(userid, file)
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
 			title = stripcdata(v[2][1])
 			animeid = animeids[title]
-			catergoryid = catergorytoid[v[14][1]] or 0
+			categoryid = categorytoid[v[14][1]] or 0
 			episodes = tonumber(v[6][1])
 			if animeid then
 				if updates[animeid] then
 					run_update, error_update = update:execute(episodes, animeid)
-					io.write(title .." ".. animeid .." ".. catergoryid .." ".. episodes .. "\t")
+					io.write(title .." ".. animeid .." ".. categoryid .." ".. episodes .. "\t")
 					if not run_update then print("Error updating "..title..": " ..error_update.. "\n") end
 				else
 					run_importi, error_import = import:execute(userid, animeid, categoryid, episodes)
-					io.write(title .." ".. animeid .." ".. catergoryid .." ".. episodes .. "\t")
+					io.write(title .." ".. animeid .." ".. categoryid .." ".. episodes .. "\t")
 					if not run_import then print("Error adding "..title..": " ..error_import.. "\n") end
 				end
 			else
