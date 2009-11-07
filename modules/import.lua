@@ -53,12 +53,12 @@ local function myanimelist(userid, file)
 			if updates[animeids[stripcdata(v[2][1])]] then
 				runupdate, updaterror = update:execute(tonumber(v[6][1]), updates[animeids[stripcdata(v[2][1])]])
 				if not runupdate then
-					print(runupdate, updaterror)
+					print(stripcdata(v[2][1]), animeids[stripcdata(v[2][1])], runupdate, updaterror)
 				end
 			else
 				runinsert, inserterror = import:execute(userid, animeids[stripcdata(v[2][1])], catergoryid[v[14][1]], tonumber(v[6][1]))
 				if not runinsert then
-					print(runinsert, inserterror)
+					print(stripcdata(v[2][1]), animeids[stripcdata(v[2][1])], runinsert, inserterror)
 				end
 				print(runinsert)
 			end
