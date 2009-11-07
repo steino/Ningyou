@@ -62,7 +62,7 @@ local function myanimelist(userid, file)
 					io.write(title .." ".. animeid .." ".. categoryid .." ".. episodes .. "\t")
 					if not run_update then print("Error updating "..title..": " ..error_update.. "\n") end
 				else
-					run_importi, error_import = import:execute(userid, animeid, categoryid, episodes)
+					run_import, error_import = import:execute(userid, animeid, categoryid, episodes)
 					io.write(title .." ".. animeid .." ".. categoryid .." ".. episodes .. "\t")
 					if not run_import then print("Error adding "..title..": " ..error_import.. "\n") end
 				end
