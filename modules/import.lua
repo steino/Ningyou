@@ -66,7 +66,7 @@ local function myanimelist(userid, file)
 					if not run_import then print("Error adding "..title..": " ..error_import) end
 				end
 			else
-				print"Anime "..title.." not found"
+				print("Anime " .. title .. " not found")
 			end
 		end
 		_DB:commit()
