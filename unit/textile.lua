@@ -26,6 +26,9 @@ local input = {
 	"3~a not b",
 
 	"@code@more@",
+
+	'"Hi Thar":http://fake.url',
+	'"he said "light":/light"'
 }
 
 local output = {
@@ -46,13 +49,16 @@ local output = {
 
 	"“Test”",
 	'"Test',
-	'“Test”"',
+	'“Test"”',
 
 	"3<sub>3</sub>",
 	"3<sub>3</sub>",
 	"3<sub>a</sub> not b",
 
 	"<code>code@more</code>",
+
+	'<a href="http://fake.url">Hi Thar</a>',
+	'“he said <a href="/light">light</a>”'
 }
 
 local failed, passed = 0, 0
