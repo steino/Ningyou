@@ -3,10 +3,11 @@ local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
 local updates = {}
 local update_count = 0
+local run_update, error_update, run_import, error_import
 
 local check = _DB:prepare('select id from nin_data_anime')
-local insert = _DB:prepare('insert into nin_data_anime (id, title, official_title) values (?,?,?)')
-local update = _DB:prepare("update nin_data_anime set title = '?', official_title = '?' where id = ?")
+local import = _DB:prepare('insert into nin_titles_anime_anidb (id, title, language) values (?,?,?)')
+local update = _DB:prepare("update nin_data_anime set title = '?', language = '?' where animeid = ?")
 
 check:execute()
 _DB:commit()
@@ -22,11 +23,15 @@ check:close()
 
 for id, t in pairs(titles) do
 	if updates[id] then
-		update:execute(t["title"], t[1] or "No title", id)
-		up = up + 1
+		for lang, title in pairs(t) do
+			run_update, error_update = update:execute(title, lang, id)
+			if not run_update then print("Could not update \"" .. title .. "\": ".. error_update) end
+		end
 	else
-		insert:execute(id, t["title"], t[1] or "No title")
-		ins = ins + 1
+		for lang, title in pairs(t) do
+			run_import, error_import = import:execute(id, title, lang)
+			if not run_update then print("Could not import \"" .. title .. "\": ".. error_import) end
+		end
 	end
 end
 
