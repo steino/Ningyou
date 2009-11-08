@@ -31,14 +31,14 @@ local function myanimelist(userid, file)
 	if not runcheck then
 		print(checkerror)
 	end
-	animedata:execute()
+	titles:execute()
 	_DB:commit()
 	
 	for row in check:rows(true) do
 		updates[row["animeid"]] = row["id"]
 	end
 
-	for row in animedata:rows(true) do
+	for row in titles:rows(true) do
 		animeids[row["title"]] = row["animeid"]
 	end
 
