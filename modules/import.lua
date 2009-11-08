@@ -39,7 +39,7 @@ local function myanimelist(userid, file)
 	end
 
 	for row in titles:rows(true) do
-		animeids[row["title"]] = row["animeid"]:lower()
+		animeids[row["title"]:lower()] = row["animeid"]
 	end
 
 	local function stripcdata(str)
