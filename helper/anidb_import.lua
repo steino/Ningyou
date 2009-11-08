@@ -13,8 +13,8 @@ check:execute()
 _DB:commit()
 
 for row in check:rows(true) do
+	if not updates[row["animeid"]] then updates[row["animeid"]] = {} end
 	if titles[row["animeid"]][row["language"]] then
-		if not updates[row["animeid"]] then updates[row["animeid"]] = {} end
 		updates[row["animeid"]][row["language"]] = "true"
 		update_count = update_count + 1
 	end
