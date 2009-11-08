@@ -14,7 +14,7 @@ local function myanimelist(userid, file)
 	local updates = {}
 	local animeids = {}
 
-	local animedata = _DB:prepare("select * from nin_data_anime")
+	local titles = _DB:prepare("select * from nin_titles_anime_animedb")
 	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
 	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
@@ -39,7 +39,7 @@ local function myanimelist(userid, file)
 	end
 
 	for row in animedata:rows(true) do
-		animeids[row["title"]] = row["id"]
+		animeids[row["title"]] = row["animeid"]
 	end
 
 	local function stripcdata(str)
