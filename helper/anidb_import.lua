@@ -14,7 +14,7 @@ _DB:commit()
 
 for row in check:rows(true) do
 	if titles[row["animeid"]][row["langage"]] then
-		updates[row["animeid"]["language"]] = "true"
+		updates[row["animeid"]][row["language"]] = "true"
 		update_count = update_count + 1
 	end
 end
