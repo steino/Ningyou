@@ -1,4 +1,5 @@
 require'helper.mysql'
+local utils = require'helper.utils'
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
 local updates = {}
@@ -21,6 +22,8 @@ for row in check:rows(true) do
 end
 
 check:close()
+
+utils.tableprint(updates)
 
 for id, t in pairs(titles) do
 	for lang, title in pairs(t) do
