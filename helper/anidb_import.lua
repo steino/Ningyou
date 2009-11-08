@@ -14,7 +14,7 @@ check:execute()
 _DB:commit()
 
 for row in check:rows(true) do
-	if not updates[row["animeid"]] then print(row["animeid"]) updates[row["animeid"]] = {} end
+	if not updates[row["animeid"]] then updates[row["animeid"]] = {} end
 	if titles[row["animeid"]][row["language"]] then
 		updates[row["animeid"]][row["language"]] = "true"
 		update_count = update_count + 1
@@ -27,6 +27,7 @@ utils.tableprint(updates)
 
 for id, t in pairs(titles) do
 	for lang, title in pairs(t) do
+		if not updates[id] then updates[id] = {} end
 		if updates[id][lang] then
 			run_update, error_update = update:execute(title, lang, id)
 			if not run_update then print("Could not update \"" .. title .. "\": ".. error_update) else up = up + 1 end
