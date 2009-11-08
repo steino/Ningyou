@@ -1,4 +1,4 @@
-require'helper.mysql'
+require'helper.mysql'i
 local utils = require'helper.utils'
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
@@ -7,8 +7,8 @@ local update_count = 0
 local run_update, error_update, run_import, error_import
 
 local check = _DB:prepare('select animeid, language from nin_titles_anime_anidb')
-local import = _DB:prepare('insert into nin_titles_anime_anidb (id, title, language) values (?,?,?)')
-local update = _DB:prepare("update nin_titles_anime_anidb set title = '?', language = '?' where animeid = ?")
+local import, im_error = _DB:prepare('insert into nin_titles_anime_anidb (id, title, language) values (?,?,?)')
+local update, up_error = _DB:prepare('update nin_titles_anime_anidb set title = ?, language = ? where animeid = ?')
 
 check:execute()
 _DB:commit()
@@ -27,13 +27,16 @@ utils.tableprint(updates)
 
 for id, t in pairs(titles) do
 	for lang, title in pairs(t) do
-		if not updates[id] then updates[id] = {} end
 		if updates[id][lang] then
-			run_update, error_update = update:execute(title, lang, id)
-			if not run_update then print("Could not update \"" .. title .. "\": ".. error_update) else up = up + 1 end
+			if not update then print ("Could not update \"" .. title.. "\": ".. up_error) else
+				run_update, error_update = update:execute(title, lang, id)
+				if not run_update then print("Could not update \"" .. title .. "\": ".. error_update) else up = up + 1 end
+			end
 		else
-			run_import, error_import = import:execute(id, title, lang)
-			if not run_update then print("Could not import \"" .. title .. "\": ".. error_import) else ins = ins + 1 end
+			if not import then print ("Could not update \"" .. title.. "\": ".. im_error) else
+				run_import, error_import = import:execute(id, title, lang)
+				if not run_import then print("Could not import \"" .. title .. "\": ".. error_import) else ins = ins + 1 end
+			end
 		end
 	end
 end
