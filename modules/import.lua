@@ -54,6 +54,7 @@ local function myanimelist(userid, file)
 	for i,v in pairs(data[2]) do
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
 			title = stripcdata(v[2][1])
+			title = title:gsub("'", "`")
 			animeid = animeids[title:lower()]
 			categoryid = categorytoid[v[14][1]] or 0
 			episodes = tonumber(v[6][1])
