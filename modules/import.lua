@@ -56,7 +56,7 @@ local function myanimelist(userid, file)
 			title = stripcdata(v[2][1])
 			title = title:gsub("'", "`")
 			title = title:gsub("%.$", "")
-			title = title:gsub("%s(wo)%s", "o")
+			title = title:gsub("%s(wo)%s", " o ")
 			animeid = animeids[title:lower()]
 			categoryid = categorytoid[v[14][1]] or 0
 			episodes = tonumber(v[6][1])
