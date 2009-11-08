@@ -39,7 +39,7 @@ local function myanimelist(userid, file)
 	end
 
 	for row in titles:rows(true) do
-		animeids[row["title"]] = row["animeid"]
+		animeids[row["title"]] = row["animeid"]:lower()
 	end
 
 	local function stripcdata(str)
@@ -54,7 +54,7 @@ local function myanimelist(userid, file)
 	for i,v in pairs(data[2]) do
 		if ( type(v[2]) == "table" ) and ( v[2].label ~= "user_name" ) then
 			title = stripcdata(v[2][1])
-			animeid = animeids[title]
+			animeid = animeids[title:lower()]
 			categoryid = categorytoid[v[14][1]] or 0
 			episodes = tonumber(v[6][1])
 			if animeid then
