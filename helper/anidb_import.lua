@@ -6,9 +6,9 @@ local updates = {}
 local update_count = 0
 local run_update, error_update, run_import, error_import
 
-local check = _DB:prepare('select animeid, language, title from nin_titles_anime_anidb')
-local import, im_error = _DB:prepare('insert into nin_titles_anime_anidb (animeid, title, language) values (?,?,?)')
-local update, up_error = _DB:prepare('update nin_titles_anime_anidb set title = ?, language = ? where animeid = ?')
+local check = _DB:prepare('select animeid, language, title from nin_titles_anime')
+local import, im_error = _DB:prepare('insert into nin_titles_anime (animeid, title, language) values (?,?,?)')
+local update, up_error = _DB:prepare('update nin_titles_anime set title = ?, language = ? where animeid = ?')
 
 check:execute()
 _DB:commit()
