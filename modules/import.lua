@@ -1,4 +1,5 @@
 require"helper.mysql"
+local MAL = require"data.mal_titles"
 local utils = require"helper.utils"
 local parse = require"helper.xml"
 local run_update, run_import, error_update, error_import
@@ -58,9 +59,15 @@ local function myanimelist(userid, file)
 			title = title:gsub("%.$", "")
 			title = title:gsub("%s(wo)%s", " o ")
 			title = title:gsub("[%s%s]+", " ")
-			animeid = animeids[title:lower()]
+			
+			-- Check the MAL table for id's.
+			animeid = MAL[title]
+			-- Nothing in the MAL table, go for the MySQL database of AniDB titles.
+			if not animeid then animeid = animeids[title:lower()] end
+			
 			categoryid = categorytoid[v[14][1]] or 0
 			episodes = tonumber(v[6][1])
+
 			if animeid then
 				if updates[animeid] then
 					run_update, error_update = update:execute(episodes, updates[animeid])
