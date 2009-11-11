@@ -34,4 +34,5 @@ return {
 	["X"] = 30,
 	["X/1999"] = 429,
 	["Zero no Tsukaima ~Futatsuki no Kishi~"] = 4915,
+	["Rozen Maiden: Trumend"] = 2386,
 }
