@@ -32,6 +32,6 @@ return {
 	["Tokyo Majin Gakuen Kenpucho: Tou"] = 4799,
 	["Welcome to the NHK!"] = 4121,
 	["X"] = 30,
-	["X/1999"]  429,
+	["X/1999"] = 429,
 	["Zero no Tsukaima ~Futatsuki no Kishi~"] = 4915,
 }
