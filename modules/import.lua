@@ -1,4 +1,4 @@
---require"helper.mysql"
+require"helper.mysql"
 local MAL = require"data.mal_titles"
 local utils = require"helper.utils"
 local parse = require"helper.xml"
