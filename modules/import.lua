@@ -39,9 +39,7 @@ local function myanimelist(userid, file)
 	}
 
 	local runcheck, checkerror = check:execute(userid)
-	if not runcheck then
-		print(checkerror)
-	end
+	if not runcheck then print(checkerror) end
 	titles:execute()
 	_DB:commit()
 	
@@ -100,6 +98,11 @@ local function anidb(userid, file)
 	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
 	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
+
+	local runcheck, checkerror = check:execute(userid)
+	if not runcheck then print(checkerror) end
+
+	_DB:commit()
 
 	for row in check:rows(true) do
 		updates[row["animeid"]] = row["id"]
