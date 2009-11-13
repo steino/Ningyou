@@ -81,10 +81,11 @@ local function myanimelist(userid, file)
 				table.insert(notfound, title)
 			end
 		end
-		run_history, error_history = history:execute(userid, "anime", "NULL", "import_mal", ins.. ";"..up)
-		if not run_history then print("Error adding history") end
-		_DB:commit()
 	end
+
+	run_history, error_history = history:execute(userid, "anime", "NULL", "import_mal", ins.. ";"..up)
+	if not run_history then print("Error adding history") end
+	_DB:commit()
 
 	return ins, up, notfound
 end
@@ -95,6 +96,7 @@ local function anidb(userid, file)
 	local data = parse(file)
 	local updates = {}
 
+	local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?")
 	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
 	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
 	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
@@ -118,6 +120,11 @@ local function anidb(userid, file)
 			end
 		end
 	end
+
+	run_history, error_history = history:execute(userid, "anime", "NULL", "import_anidb", ins.. ";"..up)
+	if not run_history then print("Error adding history") end
+	_DB:commit()
+
 	return ins, up
 end
 
