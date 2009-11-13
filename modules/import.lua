@@ -4,7 +4,6 @@ local utils = require"helper.utils"
 local parse = require"helper.xml"
 local run_update, run_import, error_update, error_import
 local title, animeid, episodes, cid, weps, eps
-local up, ins = 0,0
 
 local notfound = {}
 
@@ -23,6 +22,7 @@ local function myanimelist(userid, file)
 	local data = parse(file)
 	local updates = {}
 	local animeids = {}
+	local up, ins = 0, 0
 
 	local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
 	local titles = _DB:prepare("select * from nin_titles_anime")
@@ -93,6 +93,7 @@ end
 local function anidb(userid, file)
 	local data = parse(file)
 	local updates = {}
+	local up, ins = 0, 0
 
 	local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
 	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
