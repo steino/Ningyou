@@ -19,7 +19,7 @@ local input = {
 	'"Test"',
 	'"Test',
 	'"Test""',
-
+	'"Testy" "test!"',
 
 	"3~3",
 	"3~3~",
@@ -50,6 +50,7 @@ local output = {
 	"“Test”",
 	'"Test',
 	'“Test"”',
+	"“Testy” “test!”",
 
 	"3<sub>3</sub>",
 	"3<sub>3</sub>",
