@@ -72,7 +72,7 @@ local function myanimelist(userid, file)
 					run_update, error_update = update:execute(episodes, updates[animeid])
 					if not run_update then print("Error updating "..title..": " ..error_update.. "\n") else up = up + 1 end
 				else
-					run_import, error_import = import:execute(userid, animeid, c/id, episodes)
+					run_import, error_import = import:execute(userid, animeid, cid, episodes)
 					if not run_import then print("Error adding "..title..": " ..error_import.. "\n") else ins = ins + 1 end
 				end
 			else
