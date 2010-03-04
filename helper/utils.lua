@@ -45,6 +45,35 @@ local utils = {
 		return arr
 	end,
 	tableprint = table_print,
+	copy = function(a, out)
+		local o = out or {}
+		for k,v in pairs(a) do
+			o[k] = v
+		end
+		return o
+	end,
+	intersect = function(a, b, out)
+		local o = out or {}
+		for k,v in pairs(a) do 
+			o[k] = b[k]
+		end
+		return o
+	end,
+	union = function(a, b, out)
+		local o = out or {}
+		copy(a, o)
+		copy(b, o)
+
+		return o
+	end,
+	difference = function(a, b, out)
+		local o = out or {}
+		copy(a, o)
+		for k,v in pairs(b) do
+			o[k] = nil
+		end
+		return o
+	end
 }
 
 return utils
