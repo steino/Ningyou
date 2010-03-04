@@ -9,6 +9,7 @@ local run_update, error_update, run_import, error_import
 local check = _DB:prepare('select animeid, language, title from nin_titles_anime')
 local import, im_error = _DB:prepare('insert into nin_titles_anime (animeid, title, language) values (?,?,?)')
 local update, up_error = _DB:prepare('update nin_titles_anime set title = ?, language = ? where animeid = ?')
+local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
 
 check:execute()
 _DB:commit()
@@ -43,7 +44,10 @@ for id, t in pairs(titles) do
 	end
 end
 
+run_history, error_history = history:execute("admin", "anime", "NULL", "import_anidb_titles", ins.. ";"..up)
+
 _DB:commit()
+
 print("There is ".. update_count .. " titles in the update table.")
 print("Inserted ".. ins .." rows.")
 print("Updated " .. up .." rows.")
