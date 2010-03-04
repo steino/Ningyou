@@ -15,9 +15,11 @@ _DB:commit()
 
 for row in check:rows(true) do
 	if not updates[row["animeid"]] then updates[row["animeid"]] = {} end
-	if titles[row["animeid"]][row["language"]] then
-		updates[row["animeid"]][row["language"]] = row["title"]
-		update_count = update_count + 1
+	if titles[row["animeid"]] then
+		if titles[row["animeid"]][row["language"]] then
+			updates[row["animeid"]][row["language"]] = row["title"]
+			update_count = update_count + 1
+		end
 	end
 end
 
