@@ -3,7 +3,7 @@ TODO:
 * IMPORTANT
 ** URL-Parser to modules (done)
 ** Parse the anidb database for titles (done)
-** Textile-lib
+** Textile-lib (delayed, markdown works for now)
 ** Template system
 ** Output system
 ** Dashboard and userlist stuff.
