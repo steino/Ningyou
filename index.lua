@@ -9,5 +9,5 @@ end
 -- Guess we should move this into the dispatcher.
 wln"Content-Type: text/html"
 
-wln"Swoosh Ningyou~~"
-wln(_ENV"PATH_INFO")
+pcall(w, "Swoosh Ningyou~~")
+pcall(w, _ENV"PATH_INFO")
