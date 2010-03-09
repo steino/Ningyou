@@ -11,5 +11,5 @@ Options -Indexes
 	RewriteRule ^(.+) - [PT,L]
 
 	RewriteCond %{REQUEST_URI} !=/favicon.ico
-	RewriteRule ^(.*) index.lua
+	RewriteRule ^(.*) index.lua/$1
 </IfModule>
