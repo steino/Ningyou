@@ -30,7 +30,7 @@ for id, t in pairs(titles) do
 	for lang, title in pairs(t) do
 		if updates[id] and updates[id][lang] then
 			if not update then print("Could not update \"" .. title.. "\": ".. up_error) else
-				if not title == updates[id][lang] then
+				if title ~= updates[id][lang] then
 					run_update, error_update = update:execute(title, lang, id)
 					if not run_update then print("Could not update \"" .. title .. "\": ".. error_update) else up = up + 1 end
 				end
