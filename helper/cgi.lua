@@ -14,7 +14,7 @@ return {
 				return nil
 			else
 				local out = {}
-				args:gsub("([^&=]+)=([^&=]*)&?", function(i,v) out[i] = v end)i
+				args:gsub("([^&=]+)=([^&=]*)&?", function(i,v) out[i] = v end)
 				return out
 			end
 		end
