@@ -1,13 +1,11 @@
 return {
 	Post = function(self, stdin, limit)
 		limit = tonumber(limit) or 0
-		local blocksize = 2048
 		if limit < 1 then
 			stdin:close()
 			return nil
 		else
-			local read = (limit > blocksize) and blocksize or limit
-			local args = stdin:read(read)
+			local args = stdin:read(limit)
 			if not args then
 				stdin:close()
 				return nil
