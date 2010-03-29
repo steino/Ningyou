@@ -7,7 +7,6 @@ return {
 			return nil
 		else
 			local read = (limit > blocksize) and blocksize or limit
-			limit = limit - read
 			local args = stdin:read(read)
 			if not args then
 				stdin:close()
@@ -18,5 +17,10 @@ return {
 				return out
 			end
 		end
+	end,
+	Get = function(self, query)
+		local out = {}
+		query:gsub("([^&=]+)=([^&=]*)&?", function(i,v) out[i] = v end)
+		return out
 	end,
 }
