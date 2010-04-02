@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title><nin:title/></title>¨
+	<title><nin:title/></title>
 	<link rel="stylesheet" type="text/css" href="<nin:css/>" />
 </head>
 <body>
