@@ -9,9 +9,11 @@ return {
 	end,
 	Render = function(self, layout)
 		layout = layout:gsub("<nin:(.-)/>", function(tag)
-			return tags[tag].func(tags[tag].args)
+			if tags[tag] then
+				return tags[tag].func(tags[tag].args)
+			end
 		end)
-	
+
 		return layout
 	end,
 	tags = tags
