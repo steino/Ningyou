@@ -8,7 +8,7 @@ local wln = function(...)
 end
 
 -- Guess we should move this into the dispatcher.
-wln("Content-Type: text/html;charset="utf-8"", "\r\n")
+wln("Content-Type: text/html;charset=utf-8", "\r\n")
 
 pcall(w, "Swoosh Ningyou~~<br />")
 for i, var in ipairs{
