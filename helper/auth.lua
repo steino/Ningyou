@@ -32,10 +32,10 @@ return {
 		if error then
 			return nil, "Didnt find user", user, error
 		else
-			local data = result:fetch(true)
+			local data = check:fetch(true)
 			pass = md5.sumhexa(pass .. salt)
 			if data["password"] == pass then
-				return true
+				return user
 			else
 				return nil, "Wrong password", user
 			end
