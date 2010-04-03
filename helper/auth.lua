@@ -28,16 +28,20 @@ return {
 	end,
 	check = function(self, user, pass)
 		local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
-		local result, error = check:execute(user)
-		if error then
-			return nil, "Didnt find user", user, error
+		local result, sqlerror = check:execute(user)
+		if sqlerror then
+			return nil, "SQL Error", user, error
 		else
 			local data = check:fetch(true)
-			pass = md5.sumhexa(pass .. salt)
-			if data["password"] == pass then
-				return user
+			if data then
+				pass = md5.sumhexa(pass .. salt)
+				if data["password"] == pass then
+					return user
+				else
+					return nil, "Wrong password", user
+				end
 			else
-				return nil, "Wrong password", user
+				return nil, "Could not find user", user
 			end
 		end
 	end,
