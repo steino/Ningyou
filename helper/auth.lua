@@ -2,6 +2,7 @@ require"helper.mysql"
 local mime = require"mime"
 local md5 = require"md5"
 local salt = io.open"salt":read"*all":gsub("\n$", "")
+local errormsg = "Invalid username or password."
 
 return {
 	encodeURLbase64 = function(self, str)
@@ -30,7 +31,7 @@ return {
 		local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
 		local result, sqlerror = check:execute(user)
 		if sqlerror then
-			return nil, "SQL Error", user, error
+			return nil, nil, "SQL error: " .. error
 		else
 			local data = check:fetch(true)
 			if data then
@@ -38,10 +39,10 @@ return {
 				if data["password"] == pass then
 					return user
 				else
-					return nil, "Wrong password", user
+					return nil, errormsg
 				end
 			else
-				return nil, "Could not find user", user
+				return nil, errormsg
 			end
 		end
 	end,
