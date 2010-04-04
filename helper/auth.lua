@@ -2,7 +2,9 @@ require"helper.mysql"
 local mime = require"mime"
 local md5 = require"md5"
 local salt = io.open"salt":read"*all":gsub("\n$", "")
+local cryptkey = io.open"cryptkey":read"*all":gsub("\n$", "")
 local errormsg = "Invalid username or password."
+local _ENV = os.getenv
 
 return {
 	encodeURLbase64 = function(self, str)
@@ -37,6 +39,9 @@ return {
 			if data then
 				pass = md5.sumhexa(pass .. salt)
 				if data["password"] == pass then
+					local userdata = _ENV"REMOTE_ADDR" .. username
+					userdata = encodeURLbase64(md5.crypt(userdata, cryptkey))
+					-- cookie:Set("userhash", userdata) -- Not yet implemented.
 					return user
 				else
 					return nil, errormsg
