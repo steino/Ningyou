@@ -42,7 +42,7 @@ return {
 					local userdata = _ENV"REMOTE_ADDR" .. username
 					userdata = encodeURLbase64(md5.crypt(userdata, cryptkey))
 					-- cookie:Set("userhash", userdata) -- Not yet implemented.
-					return user
+					return user, nil, userdata
 				else
 					return nil, errormsg
 				end
