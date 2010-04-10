@@ -29,7 +29,7 @@ return {
 	username = function(self)
 		
 	end,
-	check = function(self, user, pass)
+	login = function(self, user, pass)
 		local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
 		local result, sqlerror = check:execute(user)
 		if sqlerror then
