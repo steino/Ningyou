@@ -15,7 +15,7 @@ return {
 				if type(r[header]) == "table" then
 					table.insert(r[header], value)
 				else
-					r[header] = { r[header], value}
+					r[header] = { r[header], value }
 				end
 			else
 				r[header] = value
@@ -27,6 +27,9 @@ return {
 		end,
 		write = function(...)
 			r:write({...})
+		end,
+		finish = function()
+			return r:finish()
 		end,
 	}
 }
