@@ -1,15 +1,16 @@
-local sapi = require"helper.sapi"
+if not sapi then return end
+
 local urlcode = require"helper.urlcode"
 
 local function header(...)
-	return sapi.Response.header(...)
+	return sapi.header(...) 
 end
 
 return {
 	Set = function(self, key, value, expire)
 		local cookie = key .. "=" .. urlcode:escape(value)
 		if expire then
-			local t = date("!%A, %d-%b-%Y %H:%M:%S GMT", expire)
+			local t = os.date("!%A, %d-%b-%Y %H:%M:%S GMT", expire)
 			cookie = cookie .. "; expires=" .. t
 		end
 		header("Set-Cookie", cookie)
@@ -22,7 +23,7 @@ return {
 		local _, _, value = cookies:find(pattern)
 		return value, urlcode:unescape(value)
 	end,
-	Delete = function(key)
-		Set(key, 1)
+	Delete = function(self, key)
+		self:Set(key, "", 1)
 	end,
 }
