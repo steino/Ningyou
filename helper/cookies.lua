@@ -8,7 +8,7 @@ end
 
 return {
 	Set = function(self, key, value, expire)
-		local cookie = key .. "=" .. urlcode:escape(value)
+		local cookie = key .. "=" .. urlcode:escape(tostring(value))
 		if expire then
 			local t = os.date("!%A, %d-%b-%Y %H:%M:%S GMT", expire)
 			cookie = cookie .. "; expires=" .. t
