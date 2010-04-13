@@ -1,3 +1,7 @@
+require"lfs"
+
+local touch = lfs.touch
+
 local function find(file)
 	local fh = io.open("sessions/" .. file)
 	if fh then 
@@ -23,6 +27,7 @@ return {
 			until not find(id .. ".lua")
 			randomseed(math.mod(id, 999999999))
 		end
+		touch("sessions/" .. file)
 		return id
 	end,
 
