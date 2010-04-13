@@ -1,5 +1,6 @@
 require"helper.mysql"
 local cookie = require"helper.cookies"
+local session = require"helper.session"
 local mime = require"mime"
 local md5 = require"md5"
 local salt = io.open"salt":read"*all":gsub("\n$", "")
@@ -43,9 +44,10 @@ return {
 		end
 	end,
 	login = function(self, user, pass)
-		local sessionid = cookie:Get"Session"
-		if sessionid and sessionid:find"^%d+$" then
-			return session:Get(sessionid, "username"), "Already logged in"
+		local sessionid = cookie:Get"Session" or nil
+		if sessionid then
+			--return session:Get(sessionid, "username"), "Already logged in"
+			return nil, "Already logged in", sessionid
 		else
 			local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
 			local result, sqlerror = check:execute(user)
@@ -56,14 +58,14 @@ return {
 				if data then
 					pass = md5.sumhexa(pass .. salt)
 					if data["password"] == pass then
-						--local id = session:New()
-						local userdata = _ENV"REMOTE_ADDR" .. data["username"]
+						local id = session:New()
+						local userdata = (_ENV"REMOTE_ADDR" or "1.1.1.1") .. data["username"]
 						userdata = self:encodeURLbase64(md5.crypt(userdata, cryptkey))
-						cookie:Set("Session", "temp")
+						cookie:Set("Session", id)
 						--session:Set(id, "userdata", userdata)
 						--session:Set(id, "username", data["username"]
 						--session:Set(id, "password", data["password"]
-						return user, nil, userdata
+						return user, nil, id
 					else
 						return nil, errormsg
 					end
