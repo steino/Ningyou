@@ -1,6 +1,13 @@
-require"lfs"
+math.randomseed(os.time() % 1e5)
 
-local touch = lfs.touch
+local function touch(file)
+	file, err = io.open(file, "w")
+	if file then
+		file:close()
+	else
+		return nil, err
+	end
+end
 
 local function find(file)
 	local fh = io.open("sessions/" .. file)
@@ -21,14 +28,14 @@ end
 return {
 	New = function(self)
 		local id = new_id()
-		if find(id .. ".lua") then
+		if find(id) then
 			repeat
 				id = new_id()
-			until not find(id .. ".lua")
-			randomseed(math.mod(id, 999999999))
+			until not find(id)
+			math.randomseed(math.mod(id, 999999999))
 		end
-		touch("sessions/" .. file)
-		return id
+		local _, err = touch("sessions/" .. id)
+		return id, err
 	end,
 
 	Load = function(self, id)
