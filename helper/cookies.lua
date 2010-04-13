@@ -16,12 +16,14 @@ return {
 		header("Set-Cookie", cookie)
 	end,
 	Get = function(self, key)
-		local cookies = os.getenv"HTTP_COOKIE"
+		local cookies = os.getenv"HTTP_COOKIE" or ""
 		cookies = ";" .. cookies .. ";"
 		cookies = cookies:gsub("%s*;%s*", ";")
 		local pattern = ";" .. key .. "=(.-);"
 		local _, _, value = cookies:find(pattern)
-		return value, urlcode:unescape(value)
+		if value then
+			return value, urlcode:unescape(value)
+		end
 	end,
 	Delete = function(self, key)
 		self:Set(key, "", 1)
