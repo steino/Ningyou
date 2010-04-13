@@ -5,6 +5,9 @@ TODO:
 ** Parse the anidb database for titles (done)
 ** Textile-lib (delayed, markdown works for now)
 ** Template system (pretty much done)
+** Sessions (work as started!)
+** Cookies (pretty much done)
+** SAPI (done sofar, add stuff when needed)
 ** Dispatcher
 ** Cache stuff.
 ** Dashboard and userlist stuff.
@@ -12,5 +15,4 @@ TODO:
 * NOT SO IMPORTANT
 ** Diffs of other users lists
 ** watch requests
-** RSS
-** 
+** RSS 
