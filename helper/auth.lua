@@ -29,8 +29,9 @@ return {
 	end,
 	username = function(self)
 		local session = cookie:Get"Session"
-		if session then
-			local data = md5.decrypt(decodeURLbase64(session), cryptkey)
+		local token = session:Get(session, "userdata")
+		if token then
+			local data = md5.decrypt(self:decodeURLbase64(token), cryptkey)
 			local user_ip = data and data:gsub(",.*$", "") or nil
 			if user_ip ~= os.getenv"REMOTE_ADDR" then
 				cookie:Delete"Session"
@@ -42,24 +43,33 @@ return {
 		end
 	end,
 	login = function(self, user, pass)
-		local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
-		local result, sqlerror = check:execute(user)
-		if sqlerror then
-			return nil, nil, "SQL error: " .. error
+		local sessionid = cookie:Get"Session"
+		if sessionid and sessionid:find"^%d+$" then
+			return session:Get(sessionid, "username"), "Already logged in"
 		else
-			local data = check:fetch(true)
-			if data then
-				pass = md5.sumhexa(pass .. salt)
-				if data["password"] == pass then
-					local userdata = _ENV"REMOTE_ADDR" .. username
-					userdata = encodeURLbase64(md5.crypt(userdata, cryptkey))
-					cookie:Set("Session", userdata)
-					return user, nil
+			local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
+			local result, sqlerror = check:execute(user)
+			if sqlerror then
+				return nil, nil, "SQL error: " .. error
+			else
+				local data = check:fetch(true)
+				if data then
+					pass = md5.sumhexa(pass .. salt)
+					if data["password"] == pass then
+						--local id = session:New()
+						local userdata = _ENV"REMOTE_ADDR" .. data["username"]
+						userdata = self:encodeURLbase64(md5.crypt(userdata, cryptkey))
+						cookie:Set("Session", "temp")
+						--session:Set(id, "userdata", userdata)
+						--session:Set(id, "username", data["username"]
+						--session:Set(id, "password", data["password"]
+						return user, nil, userdata
+					else
+						return nil, errormsg
+					end
 				else
 					return nil, errormsg
 				end
-			else
-				return nil, errormsg
 			end
 		end
 	end,
