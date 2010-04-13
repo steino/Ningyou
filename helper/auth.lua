@@ -1,4 +1,5 @@
 require"helper.mysql"
+local cookie = require"helper.cookies"
 local mime = require"mime"
 local md5 = require"md5"
 local salt = io.open"salt":read"*all":gsub("\n$", "")
@@ -27,7 +28,18 @@ return {
 		return str
 	end,
 	username = function(self)
-		
+		local session = cookie:Get"Session"
+		if session then
+			local data = md5.decrypt(decodeURLbase64(session), cryptkey)
+			local user_ip = data and data:gsub(",.*$", "") or nil
+			if user_ip ~= os.getenv"REMOTE_ADDR" then
+				cookie:Delete"Session"
+				return
+			else
+				local user = data and data:gsub("^.*,", "") or nil
+				return user
+			end
+		end
 	end,
 	login = function(self, user, pass)
 		local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
@@ -41,8 +53,8 @@ return {
 				if data["password"] == pass then
 					local userdata = _ENV"REMOTE_ADDR" .. username
 					userdata = encodeURLbase64(md5.crypt(userdata, cryptkey))
-					-- cookie:Set("userhash", userdata) -- Not yet implemented.
-					return user, nil, userdata
+					cookie:Set("Session", userdata)
+					return user, nil
 				else
 					return nil, errormsg
 				end
