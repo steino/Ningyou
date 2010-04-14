@@ -1,6 +1,5 @@
 require"helper.mysql"
 local MAL = require"data.mal_titles"
-local utils = require"helper.utils"
 local parse = require"helper.xml"
 local run_update, run_import, error_update, error_import
 local title, animeid, episodes, cid, weps, eps

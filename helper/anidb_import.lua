@@ -1,5 +1,4 @@
 require'helper.mysql'
-local utils = require'helper.utils'
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
 local updates = {}
