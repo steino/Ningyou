@@ -1,6 +1,6 @@
 module("utils", package.seeall)
 
-local handleKey = function(self, key)
+local handleKey = function(key)
 	if type(key) == "number" or type(key) == "boolean" then
 		return ("[%s]"):format(key)
 	else
@@ -8,7 +8,7 @@ local handleKey = function(self, key)
 	end
 end
 
-local handleValue = function(self, value, i)
+local handleValue = function(value, i)
 	if type(value) == "table" then
 		return table_tostring(value, i+1)
 	elseif type(value) == "number" or type(value) == "boolean" then
@@ -18,7 +18,7 @@ local handleValue = function(self, value, i)
 	end
 end
 
-function table_tostring(self, t, i)
+function table_tostring(t, i)
 	if type(t) ~= "table" then return end
 	i = i or 1
 	local str = ""
@@ -29,7 +29,7 @@ function table_tostring(self, t, i)
 	return ("{\n"..str..("\t"):rep(i-1).."}")
 end
 
-function split(self, msg, char)
+function split(msg, char)
 	local arr = {}
 	local fchar = "(.-)" .. char
 	local last_end = 1
@@ -48,7 +48,7 @@ function split(self, msg, char)
 	return arr
 end
 
-function table_print(self, tt, indent, done)
+function table_print(tt, indent, done)
 	done = done or {}
 	indent = indent or 0
 	if type(tt) == "table" then
@@ -97,9 +97,12 @@ end
 
 function difference(a, b, out)
 	local o = out or {}
-	copy(a, o)
-	for k,v in pairs(b) do
-		o[k] = nil
+	local temp = copy(a, o)
+	if temp then
+		print"we could copy"
+		for k,v in pairs(b) do
+			o[k] = nil
+		end
 	end
 	return o
 end
