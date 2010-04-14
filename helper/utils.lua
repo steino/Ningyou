@@ -16,7 +16,7 @@ return {
 		end
 	end,
 	table_tostring = function(self, t, i)
-		if type(t) ~= "table" then return "Not a table" end
+		if type(t) ~= "table" then return end
 		i = i or 1
 		local str = ""
 		for k,v in pairs(t) do
