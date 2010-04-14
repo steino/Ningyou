@@ -98,11 +98,8 @@ end
 function difference(a, b, out)
 	local o = out or {}
 	local temp = copy(a, o)
-	if temp then
-		print"we could copy"
-		for k,v in pairs(b) do
-			o[k] = nil
-		end
+	for k,v in pairs(b) do
+		o[k] = nil
 	end
 	return o
 end
