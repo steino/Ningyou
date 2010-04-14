@@ -85,14 +85,13 @@ return {
 	end,
 	union = function(self, a, b, out)
 		local o = out or {}
-		copy(a, o)
-		copy(b, o)
-
+		self:copy(a, o)
+		self:copy(b, o)
 		return o
 	end,
 	difference = function(self, a, b, out)
 		local o = out or {}
-		copy(a, o)
+		self:copy(a, o)
 		for k,v in pairs(b) do
 			o[k] = nil
 		end
