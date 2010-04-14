@@ -30,13 +30,14 @@ return {
 	end,
 	username = function(self)
 		local session = cookie:Get"Session"
-		local token = session:Get(session, "userdata")
+		if not sessiondata then return nil, "Cannot read sessiondata" end
+		local token = sessiondata.userdata
 		if token then
 			local data = md5.decrypt(self:decodeURLbase64(token), cryptkey)
 			local user_ip = data and data:gsub(",.*$", "") or nil
 			if user_ip ~= os.getenv"REMOTE_ADDR" then
 				cookie:Delete"Session"
-				return
+				return nil, "Invalid IP: " .. user_ip
 			else
 				local user = data and data:gsub("^.*,", "") or nil
 				return user
@@ -58,14 +59,18 @@ return {
 				if data then
 					pass = md5.sumhexa(pass .. salt)
 					if data["password"] == pass then
-						local id = session:New()
-						local userdata = (_ENV"REMOTE_ADDR" or "1.1.1.1") .. data["username"]
+						local id, err = session:New()
+						if not id then return nil, err end
+						local userdata = (_ENV"REMOTE_ADDR" or "1.1.1.1") ..",".. data["username"]
 						userdata = self:encodeURLbase64(md5.crypt(userdata, cryptkey))
+						local sessiondata = {}
+						sessiondata.userdata = userdata
+						sessiondata.username = data["username"]
+						sessiondata.password = data["password"]
 						cookie:Set("Session", id)
-						--session:Set(id, "userdata", userdata)
-						--session:Set(id, "username", data["username"]
-						--session:Set(id, "password", data["password"]
-						return user, nil, id
+						local save, err = session:Save(id, sessiondata)
+						if not save then return nil, err end
+						return user, nil, id, sessiondata
 					else
 						return nil, errormsg
 					end
