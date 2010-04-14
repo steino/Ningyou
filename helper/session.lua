@@ -1,7 +1,15 @@
+if not utils then return nil, "Utils not loaded" end
+
 math.randomseed(os.time() % 1e5)
 
+local exec = os.execute
+
+local function chmod(file)
+	exec("chmod 777 sessions/"..file)
+end
+
 local function touch(file)
-	file, err = io.open(file, "w")
+	file, err = io.open("sessions/"..file, "w")
 	if file then
 		file:close()
 	else
@@ -34,16 +42,45 @@ return {
 			until not find(id)
 			math.randomseed(math.mod(id, 999999999))
 		end
-		local _, err = touch("sessions/" .. id)
+		local _, err = touch(id)
+		chmod(id)
 		return id, err
 	end,
 
 	Load = function(self, id)
+		if check_id(id) then
+			local f, err = loadfile("sessions/"..id)
+			if not f then
+				return nil, err
+			else
+				return f()
+			end
+		else
+			return nil, "Invalid session ID"
+		end
 	end,
 
-	Set = function(self, id, key, value)
+	Save = function(self, id, data)
+		id = tostring(id)
+		local s = sessiondata or data
+		if s and check_id(id) then
+			local fh = assert(io.open("sessions/"..id, "w+"))
+			fh:write("return " .. utils.table_tostring(s))
+			fh:close()
+			return true
+		else
+			return nil, "Invalid session"
+		end
 	end,
 
-	Unset = function(self, id, key)
+	Delete = function(self, id)
+		if check_id(id) and find(id) then
+			local f, err = os.remove("sessions/"..id)
+			if f then
+				sessiondata = nil
+			else
+				return nil, err
+			end
+		end
 	end,
 }
