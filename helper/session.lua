@@ -1,4 +1,4 @@
-if not utils then return nil, "Utils not loaded" end
+local utils = require"helper.utils"
 
 math.randomseed(os.time() % 1e5)
 
@@ -65,7 +65,7 @@ return {
 		local s = sessiondata or data
 		if s and check_id(id) then
 			local fh = assert(io.open("sessions/"..id, "w+"))
-			fh:write("return " .. utils.table_tostring(s))
+			fh:write("return " .. table.tostring(s))
 			fh:close()
 			return true
 		else
