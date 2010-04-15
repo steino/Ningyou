@@ -1,6 +1,5 @@
 local table = require'table'
 local string = require'string'
-local io = require'io'
 local base = _G
 
 local next = next
