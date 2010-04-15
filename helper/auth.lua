@@ -28,9 +28,19 @@ return {
 		local str = mime.unb64(b64)
 		return str
 	end,
-	username = function(self)
+	check = function(self)
 		local session = cookie:Get"Session"
 		if not sessiondata then return nil, "Cannot read sessiondata" end
+		
+		local check = _DB:prepare"SELECT password FROM nin_users where username = ?"
+		local result, sqlerror = check:execute(sessiondata.username)
+		if sqlerror then return nil, sqlerror end
+		
+		local sqldata = check:fetch(true)
+		if not sqldata then return nil, "Didnt find user: " .. sessiondata.username end
+		
+		if sqldata["password"] ~= sessiondata.password then return nil, "Wrong passord" end
+		
 		local token = sessiondata.userdata
 		if token then
 			local data = md5.decrypt(self:decodeURLbase64(token), cryptkey)
@@ -47,13 +57,12 @@ return {
 	login = function(self, user, pass)
 		local sessionid = cookie:Get"Session" or nil
 		if sessionid then
-			--return session:Get(sessionid, "username"), "Already logged in"
-			return nil, "Already logged in", sessionid
+			return sessiondata.username, "Already logged in"
 		else
 			local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
 			local result, sqlerror = check:execute(user)
 			if sqlerror then
-				return nil, nil, "SQL error: " .. error
+				return nil, nil, "SQL error: " .. sqlerror
 			else
 				local data = check:fetch(true)
 				if data then
