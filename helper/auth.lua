@@ -89,4 +89,13 @@ return {
 			end
 		end
 	end,
+	logout = function(self)
+		local check, err = self:check()
+		if not check then return nil, err end
+
+		local sessionid = cookie:Get"Session"
+		cookie:Delete"Session"
+		sessiondata = nil
+		session:Delete(sessionid)
+	end,
 }
