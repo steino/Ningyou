@@ -1,4 +1,13 @@
-module("utils", package.seeall)
+local table = require'table'
+local string = require'string'
+local io = require'io'
+local base = _G
+
+local next = next
+local type = type
+local tostring = tostring
+
+module(...)
 
 local handleKey = function(key)
 	if type(key) == "number" or type(key) == "boolean" then
@@ -10,7 +19,7 @@ end
 
 local handleValue = function(value, i)
 	if type(value) == "table" then
-		return table_tostring(value, i+1)
+		return table.tostring(value, i+1)
 	elseif type(value) == "number" or type(value) == "boolean" then
 		return value
 	else
@@ -18,18 +27,18 @@ local handleValue = function(value, i)
 	end
 end
 
-function table_tostring(t, i)
+function table.tostring(t, i)
 	if type(t) ~= "table" then return end
 	i = i or 1
 	local str = ""
-	for k,v in pairs(t) do
+	for k,v in next, t do
 		str = str .. ("%s%s = %s,\n"):format(("\t"):rep(i), handleKey(k), handleValue(v, i))
 	end
 	
 	return ("{\n"..str..("\t"):rep(i-1).."}")
 end
 
-function split(msg, char)
+function string.split(msg, char)
 	local arr = {}
 	local fchar = "(.-)" .. char
 	local last_end = 1
@@ -45,60 +54,37 @@ function split(msg, char)
 		cap = msg:sub(last_end)
 		table.insert(arr, cap)
 	end
-	return arr
+	return base.unpack(arr)
 end
 
-function table_print(tt, indent, done)
-	done = done or {}
-	indent = indent or 0
-	if type(tt) == "table" then
-		for key, value in pairs (tt) do
-			io.write(string.rep (" ", indent)) -- indent it
-			if type (value) == "table" and not done [value] then
-				done [value] = true
-				io.write(string.format("[%s] => table\n", tostring (key)));
-				io.write(string.rep (" ", indent+4)) -- indent it
-				io.write("(\n");
-				table_print (value, indent + 7, done)
-				io.write(string.rep (" ", indent+4)) -- indent it
-				io.write(")\n");
-			else
-				io.write(string.format("[%s] => %s\n",
-				tostring (key), tostring(value)))
-			end
-		end
-	else
-		io.write(tt .. "\n")
-	end
-end
-
-function copy(a, out)
+set = {}
+function set.copy(a, out)
 	local o = out or {}
-	for k,v in pairs(a) do
+	for k,v in next, a do
 		o[k] = v
 	end
 	return o
 end
 	
-function intersect(a, b, out)
+function set.intersect(a, b, out)
 	local o = out or {}
-	for k,v in pairs(a) do 
+	for k,v in next, a do 
 		o[k] = b[k]
 	end
 	return o
 end
 
-function union(a, b, out)
+function set.union(a, b, out)
 	local o = out or {}
-	copy(a, o)
-	copy(b, o)
+	set.copy(a, o)
+	set.copy(b, o)
 	return o
 end
 
-function difference(a, b, out)
+function set.difference(a, b, out)
 	local o = out or {}
-	local temp = copy(a, o)
-	for k,v in pairs(b) do
+	local temp = set.copy(a, o)
+	for k,v in next, b do
 		o[k] = nil
 	end
 	return o
