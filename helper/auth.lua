@@ -37,9 +37,9 @@ return {
 		if sqlerror then return nil, sqlerror end
 		
 		local sqldata = check:fetch(true)
-		if not sqldata then return nil, "Didnt find user: " .. sessiondata.username end
+		if not sqldata then return nil, errormsg end
 		
-		if sqldata["password"] ~= sessiondata.password then return nil, "Wrong passord" end
+		if sqldata["password"] ~= sessiondata.password then return nil, errormsg end
 		
 		local token = sessiondata.userdata
 		if token then
