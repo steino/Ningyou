@@ -7,10 +7,14 @@ return {
 			args = args,
 		}
 	end,
-	Render = function(self, layout)
+	Render = function(self, layout, args)
 		layout = layout:gsub("<nin:(.-)/>", function(tag)
 			if tags[tag] then
-				return tags[tag].func(tags[tag].args)
+				if args then
+					return tags[tag].func(args)
+				else
+					return tags[tag].func(tags[tag].args)
+				end
 			end
 		end)
 
