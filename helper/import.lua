@@ -1,4 +1,4 @@
-require"helper.mysql"
+local db = ningyou.mysql
 local MAL = require"data.mal_titles"
 local parse = require"helper.xml"
 local run_update, run_import, error_update, error_import
@@ -6,14 +6,14 @@ local title, animeid, episodes, cid, weps, eps
 
 local notfound = {}
 
-	local function stripcdata(str)
-		if type(str) == "string" then
-			nstr = string.match(str, "%[CDATA%[(.+)%]%]") or nil
-			return nstr or str
-		else
-			return str
-		end
+local function stripcdata(str)
+	if type(str) == "string" then
+		nstr = string.match(str, "%[CDATA%[(.+)%]%]") or nil
+		return nstr or str
+	else
+		return str
 	end
+end
 
 -- myAnimeList
 
@@ -23,11 +23,11 @@ local function myanimelist(userid, file)
 	local animeids = {}
 	local up, ins = 0, 0
 
-	local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
-	local titles = _DB:prepare("select * from nin_titles_anime")
-	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
-	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
-	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
+	local history = db:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
+	local titles = db:prepare("select * from nin_titles_anime")
+	local check = db:prepare("select * from nin_list_anime where userid = ?")
+	local import = db:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
+	local update = db:prepare("update nin_list_anime set episodes = ? where id = ?")
 
 	local categorytoid = {
 		["Watching"] = 1,
@@ -40,7 +40,7 @@ local function myanimelist(userid, file)
 	local runcheck, checkerror = check:execute(userid)
 	if not runcheck then print(checkerror) end
 	titles:execute()
-	_DB:commit()
+	db:commit()
 	
 	for row in check:rows(true) do
 		updates[row["animeid"]] = row["id"]
@@ -82,7 +82,7 @@ local function myanimelist(userid, file)
 
 	run_history, error_history = history:execute(userid, "anime", "NULL", "import_mal", ins.. ";"..up)
 	if not run_history then print("Error adding history") end
-	_DB:commit()
+	db:commit()
 
 	return ins, up, notfound
 end
@@ -94,15 +94,15 @@ local function anidb(userid, file)
 	local updates = {}
 	local up, ins = 0, 0
 
-	local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
-	local check = _DB:prepare("select * from nin_list_anime where userid = ?")
-	local import = _DB:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
-	local update = _DB:prepare("update nin_list_anime set episodes = ? where id = ?")
+	local history = db:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
+	local check = db:prepare("select * from nin_list_anime where userid = ?")
+	local import = db:prepare("insert into nin_list_anime (userid, animeid, categoryid, episodes) values (?,?,?,?)")
+	local update = db:prepare("update nin_list_anime set episodes = ? where id = ?")
 
 	local runcheck, checkerror = check:execute(userid)
 	if not runcheck then print(checkerror) end
 
-	_DB:commit()
+	db:commit()
 
 	for row in check:rows(true) do
 		updates[row["animeid"]] = row["id"]
@@ -126,7 +126,7 @@ local function anidb(userid, file)
 
 	run_history, error_history = history:execute(userid, "anime", "NULL", "import_anidb", ins.. ";"..up)
 	if not run_history then print("Error adding history") end
-	_DB:commit()
+	db:commit()
 
 	return ins, up
 end

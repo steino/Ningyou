@@ -1,17 +1,17 @@
-require'helper.mysql'
+local db = ningyou.mysql
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
 local updates = {}
 local update_count = 0
 local run_update, error_update, run_import, error_import
 
-local check = _DB:prepare('select animeid, language, title from nin_titles_anime')
-local import, im_error = _DB:prepare('insert into nin_titles_anime (animeid, title, language) values (?,?,?)')
-local update, up_error = _DB:prepare('update nin_titles_anime set title = ?, language = ? where animeid = ?')
-local history = _DB:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
+local check = db:prepare('select animeid, language, title from nin_titles_anime')
+local import, im_error = db:prepare('insert into nin_titles_anime (animeid, title, language) values (?,?,?)')
+local update, up_error = db:prepare('update nin_titles_anime set title = ?, language = ? where animeid = ?')
+local history = db:prepare("insert into nin_history (userid, showtype, showid, event, value) values (?,?,?,?,?)")
 
 check:execute()
-_DB:commit()
+db:commit()
 
 for row in check:rows(true) do
 	if not updates[row["animeid"]] then updates[row["animeid"]] = {} end
@@ -45,7 +45,7 @@ end
 
 run_history, error_history = history:execute("admin", "anime", "NULL", "import_anidb_titles", ins.. ";"..up)
 
-_DB:commit()
+db:commit()
 
 print("There is ".. update_count .. " titles in the update table.")
 print("Inserted ".. ins .." rows.")

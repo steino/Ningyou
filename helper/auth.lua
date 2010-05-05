@@ -1,4 +1,4 @@
-require"helper.mysql"
+local db = ningyou.mysql
 local cookie = require"helper.cookies"
 local session = require"helper.session"
 local mime = require"mime"
@@ -32,7 +32,7 @@ return {
 		local session = cookie:Get"Session"
 		if not sessiondata then return nil, "Cannot read sessiondata" end
 		
-		local check = _DB:prepare"SELECT password FROM nin_users where username = ?"
+		local check = db:prepare"SELECT password FROM nin_users where username = ?"
 		local result, sqlerror = check:execute(sessiondata.username)
 		if sqlerror then return nil, sqlerror end
 		
@@ -59,7 +59,7 @@ return {
 		if sessionid then
 			return sessiondata.username, "Already logged in"
 		else
-			local check = _DB:prepare"SELECT username, password FROM nin_users WHERE username = ?"
+			local check = db:prepare"SELECT username, password FROM nin_users WHERE username = ?"
 			local result, sqlerror = check:execute(user)
 			if sqlerror then
 				return nil, nil, "SQL error: " .. sqlerror

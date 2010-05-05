@@ -1,13 +1,15 @@
 require"helper.mysql"
 
+local db = ningyou.mysql
+
 local tests = {
 	{
 		"insert into nin_data_anime (id, title, official_title, episodes) values (?,?,?,?)",
 		function(q)
 			io.write'Running test #1: '
-			local query = assert(_DB:prepare(q))
+			local query = assert(db:prepare(q))
 			assert(query:execute(0,'title test', 'official title test', '0'))
-			assert(_DB:commit())
+			assert(db:commit())
 			assert(query:close())
 			print('Done')
 		end,
@@ -16,9 +18,9 @@ local tests = {
 		"select * from nin_data_anime where id = ?",
 		function(q)
 			io.write'Running test #2: '
-			local query = assert(_DB:prepare(q))
+			local query = assert(db:prepare(q))
 			assert(query:execute(0))
-			assert(_DB:commit())
+			assert(db:commit())
 			local cols = assert(query:columns())
 			local row = assert(query:fetch(true))
 			assert(row["id"] == 0)
@@ -33,9 +35,9 @@ local tests = {
 		"delete from nin_data_anime where id = ?",
 		function(q)
 			io.write'Running test #3: '
-			local query = assert(_DB:prepare(q))
+			local query = assert(db:prepare(q))
 			assert(query:execute(0))
-			assert(_DB:commit())
+			assert(db:commit())
 			assert(query:close())
 			print'Done'
 		end,
