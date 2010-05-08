@@ -1,3 +1,5 @@
+local w = io.write
+
 module("sapi", package.seeall)
 
 headers = {
@@ -14,4 +16,17 @@ function header(name, value)
 	else
 		headers[name] = value
 	end
+end
+
+function setheader(header)
+	for n,v in pairs(header) do
+		if type(v) == "table" then
+			for _,t in pairs(v) do
+				pcall(w, n .. ": " .. t .. "\r\n")
+			end
+		else
+			pcall(w, n .. ": " .. v .."\r\n")
+		end
+	end
+	w"\r\n"
 end
