@@ -19,6 +19,7 @@ function header(name, value)
 end
 
 function setheader(header)
+	header = header or sapi.headers
 	for n,v in pairs(header) do
 		if type(v) == "table" then
 			for _,t in pairs(v) do
