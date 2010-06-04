@@ -1,37 +1,21 @@
-#!/home/haste/lua/haste.ixo.no/bin/lua
+#!/home/steino/lua/bin/luajit
 
+require"helper.sapi" -- Server API stuff.
+
+local cgi = require"helper.cgi"
+local url = require"helper.url"
 local _ENV = os.getenv
-local w = io.write
-local wln = function(...)
-	pcall(w, ...)
-	w'\r\n'
-end
+local _write = io.write
+local _open = io.open
+local _load = loadfile
 
--- Guess we should move this into the dispatcher.
-wln("Content-Type: text/html;charset=utf-8", "\r\n")
+ningyou.POST = cgi:Post(io.stdin, _ENV"CONTENT_LENGHT")
+ningyou.QUERY = cgi:Get(_ENV"QUERY_STRING")
 
-pcall(w, "Swoosh Ningyou~~<br />")
-for i, var in ipairs{
-	'AUTH_TYPE',
-	'CONTENT_LENGTH',
-	'CONTENT_TYPE',
-	'GATEWAY_INTERFACE',
-	'PATH_INFO',
-	'PATH_TRANSLATED',
-	'QUERY_STRING',
-	'REMOTE_ADDR',
-	'REMOTE_HOST',
-	'REMOTE_IDENT',
-	'REMOTE_USER',
-	'REQUEST_METHOD',
-	'SCRIPT_NAME',
-	'SCRIPT_FILENAME',
-	'SCRIPT_URL',
-	'SCRIPT_URI',
-	'SERVER_NAME',
-	'SERVER_PORT',
-	'SERVER_PROTOCOL',
-	'SERVER_SOFTWARE',
-} do
-	print(string.format('%02d: %s = %s<br />',i, var, _ENV(var) or 'nil'))
-end
+local file = "containers/" .. url(_ENV"PATH_INFO")[1] .. ".lua"
+local _, fh = pcall(_open, file)
+if not fh then return "404" end
+fh:close()
+
+local _,content = pcall(_load, file)
+if not content then return nil, "No content"  end
