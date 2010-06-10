@@ -39,6 +39,8 @@ if not pcall(run) then
 	return _write"Something terribly wrong happened"
 end
 
+sapi.setheader()
+
 local _, content = pcall(tags.Render, template(_URL[1]))
 
 if not pcall(_write, content) then
