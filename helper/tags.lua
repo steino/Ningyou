@@ -1,24 +1,24 @@
-local tags = {}
+module("tags", package.seeall)
 
-return {
-	Register = function(self, tag, func, args)
-		tags[tag] = {
-			func = func,
-			args = args,
-		}
-	end,
-	Render = function(self, layout, args)
-		layout = layout:gsub("<nin:(.-)/>", function(tag)
-			if tags[tag] then
-				if args then
-					return tags[tag].func(args)
-				else
-					return tags[tag].func(tags[tag].args)
-				end
+reg = {}
+
+function Register(tag, func, args)
+	reg[tag] = {
+		func = func,
+		args = args,
+	}
+end
+
+function Render(layout, args)
+	layout = layout:gsub("<nin:(.-)/>", function(tag)
+		if reg[tag] then
+			if args then
+				return reg[tag].func(args)
+			else
+				return reg[tag].func(reg[tag].args)
 			end
-		end)
+		end
+	end)
 
-		return layout
-	end,
-	tags = tags
-}
+	return layout
+end
