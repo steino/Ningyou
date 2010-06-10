@@ -20,6 +20,7 @@ local file = "containers/" .. _URL[1] .. ".lua"
 local _, fh = pcall(_open, file)
 
 if not fh then
+	pcall(sapi.setheader())
 	if ningyou.mysql then ningyou.mysql:close() end
 	return _write"404"
 end
@@ -29,19 +30,24 @@ fh:close()
 local _, run, err = pcall(_load, file)
 
 if err then 
+	pcall(sapi.setheader())
 	if ningyou.mysql then ningyou.mysql:close() end
 	-- Add some kind of debug page here.
 	return _write(err) 
 end
 
 if not pcall(run) then
+	pcall(sapi.setheader())
 	if ningyou.mysql then ningyou.mysql:close() end
 	return _write"Something terribly wrong happened"
 end
 
-sapi.setheader()
-
 local _, content = pcall(tags.Render, template(_URL[1]))
+
+if not pcall(sapi.setheader) then
+	if ningyou.mysql then ningyou.mysql:close() end
+	return _write"Unable to set headers."
+end
 
 if not pcall(_write, content) then
 	if ningyou.mysql then ningyou.mysql:close() end
