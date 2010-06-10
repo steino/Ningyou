@@ -7,7 +7,7 @@ local cgi = require"helper.cgi"
 local url = require"helper.url"
 local template = require"helper.template"
 local _ENV = os.getenv
-local _URL = url(_ENV"PATH_INFO" or "/rss/steino/anime/")
+local _URL = url(_ENV"PATH_INFO" or "/")
 local _write = io.write
 local _open = io.open
 local _load = loadfile
@@ -16,11 +16,11 @@ local _load = loadfile
 ningyou.POST = cgi:Post(io.stdin, _ENV"CONTENT_LENGHT")
 ningyou.QUERY = cgi:Get(_ENV"QUERY_STRING")
 
-local file = "containers/" .. _URL[1] .. ".lua"
+if _URL[1] then local file = "containers/" .. _URL[1] .. ".lua" else file = "" end
 local _, fh = pcall(_open, file)
 
 if not fh then
-	pcall(sapi.setheader())
+	pcall(sapi.setheader)
 	if ningyou.mysql then ningyou.mysql:close() end
 	return _write"404"
 end
@@ -30,14 +30,14 @@ fh:close()
 local _, run, err = pcall(_load, file)
 
 if err then 
-	pcall(sapi.setheader())
+	pcall(sapi.setheader)
 	if ningyou.mysql then ningyou.mysql:close() end
 	-- Add some kind of debug page here.
 	return _write(err) 
 end
 
 if not pcall(run) then
-	pcall(sapi.setheader())
+	pcall(sapi.setheader)
 	if ningyou.mysql then ningyou.mysql:close() end
 	return _write"Something terribly wrong happened"
 end
