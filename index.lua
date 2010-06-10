@@ -7,7 +7,7 @@ local cgi = require"helper.cgi"
 local url = require"helper.url"
 local template = require"helper.template"
 local _ENV = os.getenv
-local _URL = url(_ENV"PATH_INFO" or "/steino")
+local _URL = url(_ENV"PATH_INFO" or "/")
 local _write = io.write
 local _open = io.open
 local _load = loadfile
@@ -16,10 +16,10 @@ local _load = loadfile
 ningyou.POST = cgi:Post(io.stdin, _ENV"CONTENT_LENGHT")
 ningyou.QUERY = cgi:Get(_ENV"QUERY_STRING")
 
-if _URL[1] then local file = "containers/" .. _URL[1] .. ".lua" else file = "" end
+local file = "containers/"..(_URL[1] or "")..".lua" or ""
 local openfile, fh = pcall(_open, file)
 
-if openfile then
+if openfile and fh then
 	fh:close()
 else
 	pcall(sapi.setheader)
