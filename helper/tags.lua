@@ -17,6 +17,8 @@ function Render(layout, args)
 			else
 				return reg[tag].func(reg[tag].args)
 			end
+		else
+			return "Missing tag: " .. tag
 		end
 	end)
 
