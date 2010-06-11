@@ -7,7 +7,7 @@ local cgi = require"helper.cgi"
 local url = require"helper.url"
 local template = require"helper.template"
 local _ENV = os.getenv
-local _URL = url(_ENV"PATH_INFO" or "/home")
+local _URL = url(_ENV"PATH_INFO" or "/")
 local _write = io.write
 local _open = io.open
 local _load = loadfile
@@ -15,7 +15,7 @@ local _load = loadfile
 ningyou.POST = cgi:Post(io.stdin, _ENV"CONTENT_LENGHT")
 ningyou.QUERY = cgi:Get(_ENV"QUERY_STRING")
 
-local file = "containers/"..(_URL[1] or "")..".lua"
+local file = "containers/"..(_URL[1] or "home")..".lua"
 local openfile, fh = pcall(_open, file)
 
 if openfile and fh then
@@ -41,7 +41,7 @@ if not pcall(run) then
 	return _write"Something terribly wrong happened"
 end
 
-local _, content = pcall(tags.Render, template(_URL[1]))
+local _, content = pcall(tags.Render, template(_URL[1]) or "home")
 
 if not pcall(sapi.setheader) then
 	if ningyou.mysql then ningyou.mysql:close() end
