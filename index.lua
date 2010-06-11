@@ -41,7 +41,7 @@ if not pcall(run) then
 	return _write"Something terribly wrong happened"
 end
 
-local _, content = pcall(tags.Render, template(_URL[1]) or "home")
+local _, content = pcall(tags.Render, template(_URL[1] or "home"))
 
 if not pcall(sapi.setheader) then
 	if ningyou.mysql then ningyou.mysql:close() end
