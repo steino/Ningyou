@@ -19,6 +19,7 @@ function header(name, value)
 end
 
 function setheader(header)
+	if setheaders then return end
 	header = header or sapi.headers
 	for n,v in pairs(header) do
 		if type(v) == "table" then
@@ -30,4 +31,6 @@ function setheader(header)
 		end
 	end
 	w"\r\n"
+
+	setheaders = "true"
 end
