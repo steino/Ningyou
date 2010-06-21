@@ -1,10 +1,9 @@
 ningyou = {}
 
-local auth = require"helper.auth"
 local config = loadfile("/home/steino/ningyou.lua")()
-
 ningyou.config_path = config['config_path']
 
+local auth = require"helper.auth"
 local salt = io.open(ningyou.config_path .. "/salt"):read"*all":gsub("\n$", "")
 local cryptkey = io.open(ningyou.config_path .. "/cryptkey"):read"*all":gsub("\n$", "")
 
