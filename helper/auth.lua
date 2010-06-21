@@ -3,8 +3,8 @@ local cookie = require"helper.cookies"
 local session = require"helper.session"
 local mime = require"mime"
 local md5 = require"md5"
-local salt = io.open"salt":read"*all":gsub("\n$", "")
-local cryptkey = io.open"cryptkey":read"*all":gsub("\n$", "")
+local salt = io.open(ningyou.config_path .. "/salt"):read"*all":gsub("\n$", "")
+local cryptkey = io.open(ningyou.config_path .. "/cryptkey"):read"*all":gsub("\n$", "")
 local errormsg = "Invalid username or password."
 local _ENV = os.getenv
 

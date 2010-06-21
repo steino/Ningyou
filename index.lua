@@ -1,8 +1,14 @@
 #!/home/steino/lua/bin/luajit
 
+ningyou = {}
+
 require"helper.sapi" -- Server API stuff.
 require"helper.tags" -- For reading and parsing ningyou tags.
 require"helper.crash"
+
+local config = loadfile("/home/steino/ningyou.lua")()
+
+ningyou.config_path = config['config_path']
 
 local cgi = require"helper.cgi"
 local url = require"helper.url"
