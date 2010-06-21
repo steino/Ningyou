@@ -5,19 +5,22 @@ local w = io.write
 local template = require"helper.template"
 local content = ""
 local err
+local codes = {
+	[404] = "Page not found",
+}
 
 module("crash", package.seeall)
 
-function error(code, msg, page)
+function error(msg, page)
 	if ningyou.mysql then ningyou.mysql:close() end -- Kill mysql object if it exists.
 
 	sapi.setheader()
 
-	if msg then
+	if type(msg) == "string" then
 		err = msg
-		log(msg, page)
+		log(msg)
 	else
-		err = code
+		err = tostring(msg) .. " " .. codes[msg]
 	end
 
 	tags.Register("title", function() return "Error Page" end)
@@ -32,14 +35,12 @@ function error(code, msg, page)
 	return content
 end
 
-function log(err, page)
+function log(err)
 	if not err then return end
-	if not page then return end
-
 	local date = os.date("%Y-%m-%d %H:%M:%S")
 	local file, file_err = io.open("logs/lua-error", "a")
 	if file then
-		file:write(page .. ": " .. date .. " - " .. err .. "\n")
+		file:write(date .. " - " .. err .. "\n")
 		file:close()
 		return true
 	else

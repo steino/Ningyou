@@ -24,15 +24,15 @@ local openfile, fh = pcall(_open, file)
 if openfile and fh then
 	fh:close()
 else
-	return _write(crash.error"404")
+	return _write(crash.error(404))
 end
 
 local _, run, err = pcall(_load, file)
 
-if err then return _write(crash.error("", err, page)) end
+if err then return _write(crash.error(err, page)) end
 
 if not pcall(run) then 
-	return _write(crash.error("", "Something terribly wrong happened", page))
+	return _write(crash.error("Something terribly wrong happened", page))
 end
 
 local _, content = pcall(tags.Render, template(page))
@@ -40,7 +40,7 @@ local _, content = pcall(tags.Render, template(page))
 pcall(sapi.setheader)
 
 if not pcall(_write, content) then 
-	return _write(crash.error("", "Something terribly wrong happened", page))
+	return _write(crash.error("Something terribly wrong happened", page))
 end
 
 if ningyou.mysql then ningyou.mysql:close() end
