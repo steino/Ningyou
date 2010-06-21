@@ -3,7 +3,7 @@ local w = io.write
 module("sapi", package.seeall)
 
 headers = {
-	["Content-Type"] = "text/html;charset=utf8",
+	["Content-Type"] = "text/html;charset=utf-8",
 }
 
 function header(name, value)
