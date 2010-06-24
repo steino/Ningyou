@@ -1,15 +1,17 @@
 local utils = require"helper.utils"
 
+local session_path = ningyou.config_path .. "/sessions/"
+
 math.randomseed(os.time() % 1e5)
 
 local exec = os.execute
 
 local function chmod(file)
-	exec("chmod 777 sessions/"..file)
+	exec("chmod 777 " .. session_path .. file)
 end
 
 local function touch(file)
-	file, err = io.open("sessions/"..file, "w")
+	file, err = io.open(session_path .. file, "w")
 	if file then
 		file:close()
 	else
@@ -18,7 +20,7 @@ local function touch(file)
 end
 
 local function find(file)
-	local fh = io.open("sessions/" .. file)
+	local fh = io.open(session_path .. file)
 	if fh then 
 		fh:close()
 		return true
@@ -49,7 +51,7 @@ return {
 
 	Load = function(self, id)
 		if check_id(id) then
-			local f, err = loadfile("sessions/"..id)
+			local f, err = loadfile(session_path .. id)
 			if not f then
 				return nil, err
 			else
@@ -64,7 +66,7 @@ return {
 		id = tostring(id)
 		local s = sessiondata or data
 		if s and check_id(id) then
-			local fh = assert(io.open("sessions/"..id, "w+"))
+			local fh = assert(io.open(session_path .. id, "w+"))
 			fh:write("return " .. table.tostring(s))
 			fh:close()
 			return true
@@ -75,7 +77,7 @@ return {
 
 	Delete = function(self, id)
 		if check_id(id) and find(id) then
-			local f, err = os.remove("sessions/"..id)
+			local f, err = os.remove(session_path .. id)
 			if f then
 				sessiondata = nil
 			else
