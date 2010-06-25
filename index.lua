@@ -41,7 +41,7 @@ if not pcall(run) then
 	return _write(crash.error("Something terribly wrong happened", page))
 end
 
-local _, content = pcall(tags.Render, template(page))
+local _, content = pcall(tags.Render, template((ningyou.template or page)))
 
 pcall(sapi.setheader)
 
