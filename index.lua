@@ -1,14 +1,11 @@
 #!/home/steino/lua/bin/luajit
 
-ningyou = {}
+local _, setenv = pcall(loadfile, "env.lua")
+pcall(setenv)
 
 require"helper.sapi" -- Server API stuff.
 require"helper.tags" -- For reading and parsing ningyou tags.
 require"helper.crash"
-
-local config = loadfile("/home/steino/ningyou.lua")()
-
-ningyou.config_path = config['config_path']
 
 local url = require"helper.url"
 local template = require"helper.template"
