@@ -10,7 +10,6 @@ local config = loadfile("/home/steino/ningyou.lua")()
 
 ningyou.config_path = config['config_path']
 
-local cgi = require"helper.cgi"
 local url = require"helper.url"
 local template = require"helper.template"
 local _ENV = os.getenv
@@ -20,9 +19,6 @@ local _open = io.open
 local _load = loadfile
 
 local page = (_URL[1] or "home")
-
-ningyou.POST = cgi:Post(io.stdin, _ENV"CONTENT_LENGHT")
-ningyou.QUERY = cgi:Get(_ENV"QUERY_STRING")
 
 local file = "containers/".. page ..".lua"
 local openfile, fh = pcall(_open, file)
@@ -37,7 +33,7 @@ local _, run, err = pcall(_load, file)
 
 if err then return _write(crash.error(err, page)) end
 
-if not pcall(run) then 
+if not pcall(run) then
 	return _write(crash.error("Something terribly wrong happened", page))
 end
 
