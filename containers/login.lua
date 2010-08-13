@@ -1,6 +1,6 @@
 local cgi = require"helper.cgi"
 local template = require"helper.template"
-local post = cgi:Post(io.stdin, os.getenv"CONTENT_LENGHT")
+local post = cgi:Post(io.stdin, os.getenv"CONTENT_LENGTH")
 
 ningyou.template = "default"
 
