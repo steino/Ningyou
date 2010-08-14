@@ -19,6 +19,6 @@ tags.Register("content", function()
 	elseif check then
 		return "Already logged in as: " .. check
 	else
-		return tags.Render(template"login") .. _ENV"HTTP_COOKIE"
+		return tags.Render(template"login")
 	end
 end)
