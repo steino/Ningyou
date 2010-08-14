@@ -10,6 +10,13 @@ local cryptkey = io.open(ningyou.config_path .. "/cryptkey"):read"*all":gsub("\n
 local errormsg = "Invalid username or password."
 local _ENV = os.getenv
 
+local sessionid = cookie:Get"Session"
+
+if sessionid then
+	_G.sessiondata = session:Load(sessionid)
+end
+
+
 return {
 	encodeURLbase64 = function(self, str)
 		local b64 = mime.b64(str)
