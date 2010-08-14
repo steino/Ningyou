@@ -1,3 +1,5 @@
+require"helper.mysql"
+
 local db = ningyou.mysql
 local cookie = require"helper.cookies"
 local session = require"helper.session"
