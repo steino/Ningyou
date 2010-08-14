@@ -13,7 +13,7 @@ tags.Register("menu", function() return [[
 	]] end)
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
-tags.Register("css", function() return "" end)
+tags.Register("css", function() return "css/test.lua" end)
 tags.Register("content", function() 
 	if post then
 		local user, loginerr = auth:login(post["login"], post["pw"])
