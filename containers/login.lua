@@ -25,6 +25,6 @@ tags.Register("content", function()
 	elseif check then
 		return "Already logged in as: " .. check
 	else
-		return tags.Render(template"login")
+		return "<div align='center'>" .. tags.Render(template"login") "</div>"
 	end
 end)
