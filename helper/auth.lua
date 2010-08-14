@@ -13,9 +13,8 @@ local _ENV = os.getenv
 local sessionid = cookie:Get"Session"
 
 if sessionid then
-	_G.sessiondata = session:Load(sessionid)
+	sessiondata = session:Load(sessionid)
 end
-
 
 return {
 	encodeURLbase64 = function(self, str)
@@ -65,7 +64,7 @@ return {
 	end,
 	login = function(self, user, pass)
 		local sessionid = cookie:Get"Session" or nil
-		if sessionid then
+		if sessiondata and sessionid then
 			return sessiondata.username, "Already logged in"
 		else
 			local check = db:prepare"SELECT username, password FROM nin_users WHERE username = ?"
