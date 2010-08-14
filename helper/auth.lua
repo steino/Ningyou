@@ -105,5 +105,6 @@ return {
 		cookie:Delete"Session"
 		sessiondata = nil
 		session:Delete(sessionid)
+		return true
 	end,
 }
