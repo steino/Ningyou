@@ -1,3 +1,5 @@
+require"helper.mysql"
+
 local db = ningyou.mysql
 local titles = loadfile(os.getenv("HOME").."/animeTitles.lua")()
 local up, ins = 0, 0
