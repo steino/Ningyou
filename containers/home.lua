@@ -1,11 +1,18 @@
 ningyou.template = "default"
 
-tags.Register("menu", function() return [[
-	<ul>
-	<li><a href="#">Home</a></li>
-	</ul>
-	]] end)
+
+egister("menu", function() 
+	local out = [[
+		<ul>
+		<li><a href="home">Home</a></li>
+	]]
+	if type(accessid) == "number" and accessid >= 99 then
+		out = out .. "<li><a href=\"admin\">Admin</a></li>"
+	end
+	return out .. "</ul>"
+end)
+
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
-tags.Register("css", function() return "" end)
-tags.Register("content", function() return "<a>Coming soon&#153;</a>" end)
+tags.Register("css", function() return "css/test.css" end)
+tags.Register("content", function() return "<div align='center'><a>Coming soon&#153;</a></div>" end)
