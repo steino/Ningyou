@@ -7,13 +7,14 @@ local check, accessid, accessname = auth:check()
 ningyou.template = "default"
 
 tags.Register("menu", function() 
-	if accessid >= 99 then
-		local adminlink = "<li><a href=\"admin\">Admin</a></li>"
-	end
-	return [[
+	local out = [[
 	<ul>
-	<li><a href="#">Home</a></li>
-	]] .. adminlink .. "</ul>"
+	<li><a href="home">Home</a></li>
+	]]
+	if accessid >= 99 then
+		out = out .. "<li><a href=\"admin\">Admin</a></li>"
+	end
+	return out .. "</ul>"
 end)
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
