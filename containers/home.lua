@@ -1,7 +1,9 @@
+local auth = require"helper.auth"
+local check, accessid, accessname = auth:check()
+
 ningyou.template = "default"
 
-
-egister("menu", function() 
+tags.Register("menu", function() 
 	local out = [[
 		<ul>
 		<li><a href="home">Home</a></li>
