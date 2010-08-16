@@ -6,11 +6,15 @@ local check, accessid, accessname = auth:check()
 
 ningyou.template = "default"
 
-tags.Register("menu", function() return [[
+tags.Register("menu", function() 
+	if accessid >= 99 then
+		local adminlink = "<li><a href=\"admin\">Admin</a></li>"
+	end
+	return [[
 	<ul>
 	<li><a href="#">Home</a></li>
-	</ul>
-	]] end)
+	]] .. adminlink .. "</ul>"
+end)
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
 tags.Register("css", function() return "css/test.css" end)
@@ -23,7 +27,7 @@ tags.Register("content", function()
 			return "Could not log you in because: " .. loginerr .. "<br/><br/><a href='login'>Try again.</a>"
 		end
 	elseif check then
-		return "Already logged in as: " .. check .. "(".. accessname .. ")"
+		return "Already logged in as: " .. check .. " (".. accessname .. ")"
 	else
 		return "<div align='center'>" .. tags.Render(template"login") .. "</div>"
 	end
