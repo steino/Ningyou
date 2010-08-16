@@ -11,7 +11,7 @@ tags.Register("menu", function()
 	<ul>
 	<li><a href="home">Home</a></li>
 	]]
-	if accessid >= 99 then
+	if type(accessid) == "number" and accessid >= 99 then
 		out = out .. "<li><a href=\"admin\">Admin</a></li>"
 	end
 	return out .. "</ul>"
