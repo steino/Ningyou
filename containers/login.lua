@@ -2,7 +2,7 @@ local auth = require"helper.auth"
 local cgi = require"helper.cgi"
 local template = require"helper.template"
 local post = cgi:Post(io.stdin, os.getenv"CONTENT_LENGTH")
-local check = auth:check()
+local check, accessid, accessname = auth:check()
 
 ningyou.template = "default"
 
@@ -23,7 +23,7 @@ tags.Register("content", function()
 			return "Could not log you in because: " .. loginerr .. "<br/><br/><a href='login'>Try again.</a>"
 		end
 	elseif check then
-		return "Already logged in as: " .. check
+		return "Already logged in as: " .. check .. "(".. accessname .. ")"
 	else
 		return "<div align='center'>" .. tags.Render(template"login") .. "</div>"
 	end

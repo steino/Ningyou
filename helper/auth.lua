@@ -10,6 +10,11 @@ local cryptkey = io.open(ningyou.config_path .. "/cryptkey"):read"*all":gsub("\n
 local errormsg = "Invalid username or password."
 local _ENV = os.getenv
 
+local accessnames = {
+	[99] = "Site Admin",
+	[1]  = "User"
+}
+
 local sessionid = cookie:Get"Session"
 
 if sessionid then
@@ -40,7 +45,7 @@ return {
 		local session = cookie:Get"Session"
 		if not sessiondata then return nil, "Cannot read sessiondata" end
 		
-		local check = db:prepare"SELECT password FROM nin_users where username = ?"
+		local check = db:prepare"SELECT password, access FROM nin_users where username = ?"
 		local result, sqlerror = check:execute(sessiondata.username)
 		if sqlerror then return nil, sqlerror end
 		
@@ -58,7 +63,7 @@ return {
 				return nil, "Invalid IP: " .. user_ip
 			else
 				local user = data and data:gsub("^.*,", "") or nil
-				return user
+				return user, sqldata["access"], accessnames[sqldata["access"]]
 			end
 		end
 	end,
