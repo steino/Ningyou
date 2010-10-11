@@ -7,12 +7,15 @@ require"helper.sapi" -- Server API stuff.
 require"helper.tags" -- For reading and parsing ningyou tags.
 require"helper.crash"
 
+local _, globals = pcall(loadfile, "global.lua")
+pcall(globals)
+
 local url = require"helper.url"
 local template = require"helper.template"
 local _ENV = os.getenv
 local _URL = url(_ENV"PATH_INFO" or "/")
 
-local page = (_URL[1] or "home")
+local page = (_URL[1] or "login")
 
 local file = "containers/".. page ..".lua"
 local openfile, fh = pcall(io.open, file)

@@ -2,33 +2,40 @@ local auth = require"helper.auth"
 local cgi = require"helper.cgi"
 local template = require"helper.template"
 local post = cgi:Post(io.stdin, os.getenv"CONTENT_LENGTH")
-local check, accessid, accessname = auth:check()
+local user, accessid, accessname = auth:check()
 
 ningyou.template = "default"
 
-tags.Register("menu", function() 
-	local out = [[
-	<ul>
-	<li><a href="home">Home</a></li>
-	]]
-	if type(accessid) == "number" and accessid >= 99 then
-		out = out .. "<li><a href=\"admin\">Admin</a></li>"
+local referer = os.getenv("HTTP_REFERER")
+
+if post and post["referer"] then
+	referer = post["referer"]
+	if referer:match"localhost" or referer:match"ningyou" then
+		referer = string.gsub(referer, "+", " ")
+		referer = string.gsub(referer, "%%(%x%x)", function(h) return string.char(tonumber(h, 16)) end)
+		referer = string.gsub(referer, "\r\n", "\n")
+	else
+		referer = "home"
 	end
-	return out .. "</ul>"
-end)
+end
+
+local menu = tags.RenderMenu()
+
+tags.Register("menu", function() return menu end)
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
 tags.Register("css", function() return "css/test.css" end)
-tags.Register("content", function() 
+tags.Register("referer", function() return (referer or "home") end)
+tags.Register("content", function()
 	if post then
 		local user, loginerr = auth:login(post["login"], post["pw"])
 		if user then
-			return "Successfully logged in as: " .. user
+			return "Successfully logged in as: " .. user .. "<br/><br/><a href=\"" .. referer .. "\">Return</a>"
 		else
 			return "Could not log you in because: " .. loginerr .. "<br/><br/><a href='login'>Try again.</a>"
 		end
-	elseif check then
-		return "Already logged in as: " .. check .. " (".. accessname .. ")"
+	elseif user then
+		return "Already logged in as: " .. user .. " (".. accessname .. ")"
 	else
 		return "<div align='center'>" .. tags.Render(template"login") .. "</div>"
 	end

@@ -3,18 +3,16 @@ local logout, lerror = auth:logout()
 
 ningyou.template = "default"
 
-tags.Register("menu", function() return [[
-	<ul>
-	<li><a href="#">Home</a></li>
-	</ul>
-	]] end)
+local menu = tags.RenderMenu()
+
+tags.Register("menu", function() return menu end)
 tags.Register("header", function() return "<h1 id=\"title\">Ningyou</h1>" end)
 tags.Register("title", function() return "Ningyou" end)
-tags.Register("css", function() return "" end)
+tags.Register("css", function() return "css/test.css" end)
 tags.Register("content", function()
 	if logout then
-		return "Sucessfully logged out."
+		return "Sucessfully logged out.<br/><br/><a href=\"home\">Go home.</a>"
 	else
-		return "Could not log you out: " .. lerror
+		return "You are not logged in, <a href=\"home\">go home.</a>"
 	end
 end)
