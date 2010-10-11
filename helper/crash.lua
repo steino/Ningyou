@@ -24,7 +24,7 @@ function error(msg, page)
 	end
 
 	tags.Register("title", function() return "Error Page" end)
-	tags.Register("css", function() return "" end)
+	tags.Register("css", function() return "css/test.css" end)
 	tags.Register("error", function(err) return "<a>" .. err[1] .. "</a>" end, { err })
 
 	content = content .. tags.Render(template"header")
