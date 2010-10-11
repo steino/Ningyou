@@ -4,6 +4,6 @@
 	</tr><tr>
 		<td>Password:</td><td><input type="password" name="pw" /></td>
 	</tr><tr>
-		<td><input type="submit" value="Submit" /></td>
+		<td><input type="hidden" name="referer" value="<nin:referer/>" /><input type="submit" value="Submit" /></td>
 	</tr>
 </table></form>
