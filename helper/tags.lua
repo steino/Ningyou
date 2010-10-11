@@ -36,6 +36,8 @@ function RenderMenu(breaktag, wraptag)
 
 	local out
 
+	table.sort(menu, function(a,b) return a.weight < b.weight end)
+
 	out = "<"..wraptag..">\n"
 	for n, t in pairs(menu) do
 		if t.access <= accessid then
@@ -47,19 +49,17 @@ function RenderMenu(breaktag, wraptag)
 	return out
 end
 
-function RegisterMenuItem(name, link, access, order)
+function RegisterMenuItem(name, link, access, weight)
 	if name and link then
 		local access = access or 1
-		local order = order or 1
+		local weight = weight or 1
 
-		-- find first available ordernumber after set order.
-		while menu[order] do order = order+1 end
-
-		menu[order] = {
+		table.insert(menu, {
 			["name"] = name,
 			["link"] = link,
 			["access"] = access,
-		}
+			["weight"] = weight,
+		})
 	else
 		return nil
 	end
