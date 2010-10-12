@@ -1,0 +1,165 @@
+/* Begin setting defaults */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table#list, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+:focus { outline: 0; }
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+ol, ul { list-style: none; }
+table#list {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after { content: ''; }
+blockquote, q { quotes: '' ''; }
+
+/* End setting defaults */
+/* Begin regular styles */
+
+body {
+	background-color: #fff;
+	color: #000;
+	font-family: 'verdana';
+	font-size: 12px;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.0;
+}
+
+a, a:link, a:visited {
+	color: #444;
+	text-decoration: none;
+}
+a:hover, a:visited:hover {
+	color: #000;
+	text-decoration: underline;
+}
+a:active, a:focus {
+	color: #000;
+	text-decoration: underline;
+}
+
+#menu {
+	border-bottom: 1px solid #000;
+	height: 28px;
+}
+#menu > ul {
+	list-style: none outside none;
+	margin: 0 auto;
+	// Assign a more accurate width for proper center.
+	// min-width: 600px;
+	// width: 600px;
+}
+#menu > ul > li {
+	float: left;
+}
+#menu > ul > li > a, #menu > ul > li > a:link,
+#menu > ul > li > a:visited {
+	background-color: #fff;
+	display: block;
+	height: 14px;
+	margin: 1px;
+	padding: 6px 15px;
+	text-decoration: none;
+}
+#menu > ul > li > a:hover, #menu > ul > li > a:link:hover,
+#menu > ul > li > a:visited:hover, #menu > ul > li > a:focus,
+#menu > ul > li > a:active {
+	background-color: #222;
+	color: #fff;
+}
+
+div#header {
+	background: #fff url('../img/ningyou.png') no-repeat top center;
+	height: 50px;
+	margin: 40px auto 35px;
+}
+h1#title {
+	content: '';
+	font-size: 200%;
+	font-style: italic;
+	font-weight: 400;
+	letter-spacing: -1px;
+	visibility: hidden;
+}
+
+div#content {
+	text-align: center;
+	text-shadow: 1px 1px 0px #fff;
+}
+
+#content > table#stats {
+	background-color: #f8f8f8;
+	border: 5px solid #f8f8f8;
+	border-radius: 5px;
+	height: 45px;
+	margin: 0 auto;
+}
+#content > table#stats td {
+	padding: 2px;
+}
+#content > table#stats td:nth-of-type(3) {
+	padding-left: 10px;
+}
+
+#content > table#list {
+	margin: 0 auto;
+	line-height: 1.2;
+	max-width: 90%;
+	min-width: 600px;
+}
+#content > table#list th {
+	font-style: italic;
+	padding: 10px 5px;
+}
+#content > table#list td {
+	border-bottom: 1px solid #000;
+	padding: 5px;
+	text-align: left;
+}
+#content > table#list td ~ td {
+}
+#content > table#list td:first-of-type {
+	min-width: 550px;
+}
+#content > table#list td:nth-of-type(2) {
+	border-left: 1px solid #fff;
+	text-align: right;
+}
+#content > table#list tr:nth-child(4n+2),
+#content > table#list tr:nth-child(4n+4) { background-color: #f8f8f8; }
+#content > table#list tr:nth-child(4n+3) { background-color: #f0f0f0; }
+
+div#footer {
+	background-color: #fff;
+	height: 50px;
+	margin-top: 100px;
+	width: 100%;
+	text-align: center;
+}
+
+/* End regular styles */
