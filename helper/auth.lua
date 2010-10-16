@@ -41,6 +41,16 @@ return {
 		local str = mime.unb64(b64)
 		return str
 	end,
+	usertoid = function(self, user)
+		local check = db:prepare"SELECT id FROM nin_users where username = ?"
+		local result, err = check:execute(user)
+		if err then return nil, err end
+
+		local sqldata = check:fetch(true)
+		if not sqldata then return nil, "No such user" end
+
+		return sqldata["id"]
+	end,
 	check = function(self)
 		local session = cookie:Get"Session"
 		if not sessiondata then return nil, "Cannot read sessiondata" end
