@@ -45,7 +45,7 @@ return {
 		local session = cookie:Get"Session"
 		if not sessiondata then return nil, "Cannot read sessiondata" end
 		
-		local check = db:prepare"SELECT password, access FROM nin_users where username = ?"
+		local check = db:prepare"SELECT id, password, access FROM nin_users where username = ?"
 		local result, sqlerror = check:execute(sessiondata.username)
 		if sqlerror then return nil, sqlerror end
 		
@@ -63,7 +63,7 @@ return {
 				return nil, "Invalid IP: " .. user_ip
 			else
 				local user = data and data:gsub("^.*,", "") or nil
-				return user, sqldata["access"], accessnames[sqldata["access"]]
+				return user, sqldata["id"], sqldata["access"], accessnames[sqldata["access"]]
 			end
 		end
 	end,
