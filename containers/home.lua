@@ -1,6 +1,3 @@
-local auth = require"helper.auth"
-local user, accessid, accessname = auth:check()
-
 ningyou.template = "default"
 
 local menu = tags.RenderMenu()

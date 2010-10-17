@@ -2,7 +2,7 @@ local auth = require"helper.auth"
 local cgi = require"helper.cgi"
 local template = require"helper.template"
 local post = cgi:Post(io.stdin, os.getenv"CONTENT_LENGTH")
-local user, accessid, accessname = auth:check()
+local user, userid, accessid, accessname = auth:check()
 
 ningyou.template = "default"
 
